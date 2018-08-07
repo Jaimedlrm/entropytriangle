@@ -5,7 +5,7 @@ from .ternary import ternary_axes_subplot
 from matplotlib import rc
 from .coordsentropic import *
 
-def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 100 , offset = 0.08):
+def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 80 , offset = 0.08):
 
     if(not isinstance(edf,pd.DataFrame)):
         sys.exit("Can only work with Data Frames! (X it´s not a DataFrame)")
@@ -23,7 +23,7 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 100 , offset = 
         mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
 
         for i in range(len(edf.index)):
-            tax.scatter(points[i:i+1], s = s_mk, marker = mk[i], color = colors(i), label = names[i])
+            tax.scatter(points[i:i+1], s = s_mk, marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.5')
 
         if (hasSplitSmetCoords(edf)):
 
@@ -57,7 +57,7 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 100 , offset = 
         mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
 
         for i in range(len(edf.index)):
-            tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i])
+            tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.3')
 
         tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 10)
         tax.left_axis_label(r"$ VI'_{P_\overline{XY}}$", fontsize=fonts)
@@ -68,18 +68,10 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 100 , offset = 
         
         sys.exit("Entropic coordinates needed for the diagram plotting")
 
-
-    tax.legend()
     tax.ticks(axis='lbr', linewidth=1, multiple=5)
     tax.clear_matplotlib_ticks()
+    tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
 
     tax.show()
-
-
-
+    
     return None
-
-
-
-
-
