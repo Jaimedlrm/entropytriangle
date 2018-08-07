@@ -5,7 +5,7 @@ from .ternary import ternary_axes_subplot
 from matplotlib import rc
 from .coordsentropic import *
 
-def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 0.08):
+def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 0.08 , gridl = 5 , ticks_size = 15):
 
     if(not isinstance(edf,pd.DataFrame)):
         sys.exit("Can only work with Data Frames! (X it´s not a DataFrame)")
@@ -18,7 +18,7 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 
         figure, tax = inverted_ternary.figure(scale=scale)
         figure.set_size_inches(25, 25)
         tax.boundary(linewidth=2.0)
-        tax.gridlines(multiple=5, color="blue")
+        tax.gridlines(multiple = gridl, color="blue")
 
         mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
 
@@ -52,7 +52,7 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 
         figure, tax = ternary.figure(scale=scale)
         figure.set_size_inches(25, 25)
         tax.boundary(linewidth=2.0)
-        tax.gridlines(multiple=5, color="blue")
+        tax.gridlines(multiple = gridl, color="blue")
 
         mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
 
@@ -68,10 +68,11 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 
         
         sys.exit("Entropic coordinates needed for the diagram plotting")
 
-    tax.ticks(axis='lbr', linewidth=1, multiple=5)
+    tax.ticks(axis='lbr', linewidth=1, multiple = gridl , fontsize = ticks_size )
     tax.clear_matplotlib_ticks()
     tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
 
     tax.show()
     
     return None
+
