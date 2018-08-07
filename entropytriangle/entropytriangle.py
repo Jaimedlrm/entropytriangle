@@ -8,7 +8,7 @@ from .coordsentropic import *
 def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 0.08 , gridl = 5 , ticks_size = 15):
 
     if(not isinstance(edf,pd.DataFrame)):
-        sys.exit("Can only work with Data Frames! (X it´s not a DataFrame)")
+        sys.exit("Can only work with Data Frames! (df it´s not a DataFrame)")
 
     points = entcoords(edf, scale)
 
