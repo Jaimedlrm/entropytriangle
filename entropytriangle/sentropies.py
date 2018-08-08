@@ -1,13 +1,11 @@
-import sys                          #' Sys.Exit 
-import warnings                     #' Warnings 
-
 import numpy as np                  #' Numpy 
-import pandas as pd
-import scipy as sc                #' DataFrames manipulation
+import pandas as pd                 #' DataFrames manipulation    
+
+from sys import exit as exit
+from warnings import warn as warning
+from scipy.stats import entropy as entropy
 
 from .auxfunc import * 
-
-
 
 def sentropies_table(Nxy,base = 2):
 
@@ -34,19 +32,19 @@ def sentropies_table(Nxy,base = 2):
     dims = Nxy.shape # dim is a tuple wiht dim[0] rows  and dim[1] columns
 
     if(len(dims) < 2 ): # dim less than 2
-        sys.exit("Cannot process tables with less/more than 2 dimensions.")
+        exit("Cannot process tables with less/more than 2 dimensions.")
     #'stop('Cannot process tables with less/more than 2 dimensions.')
 
     if(dims[0] < 2 | dims[1] < 2):
-        sys.exit("Sentropies are not defined for distributions with a singleton domain.")
+        exit("Sentropies are not defined for distributions with a singleton domain.")
     #'stop('Sentropies are not defined for distributions with a singleton domain.')
 
     if (len(dims) == 2):
 
         Nx = Nxy.sum(axis = 1) ; Ny = Nxy.sum(axis = 0)
-        Hx = sc.stats.entropy(Nx , base = base) ; Hy = sc.stats.entropy(Ny , base = base)
+        Hx = entropy(Nx , base = base) ; Hy = sc.stats.entropy(Ny , base = base)
         Ux = np.log2(dims[0]) ; Uy = np.log2(dims[1])
-        Hxy = sc.stats.entropy( Nxy.reshape(np.prod(dims)), base  = base)
+        Hxy = entropy( Nxy.reshape(np.prod(dims)), base  = base)
 
         df = pd.DataFrame({'Name': ['XY'],'Ux': Ux,'Uy': Uy,'Hx': Hx,'Hy': Hy, 'Hxy': Hxy})
         df = df.set_index('Name')
@@ -59,11 +57,11 @@ def sentropies_table(Nxy,base = 2):
         dims = Nxy.shape
         Nx = Nxy.sum(axis = len(dims)-1)
         Ny = Nxy.sum(axis = len(dims)-2)
-        Hx = np.nan_to_num(np.apply_along_axis(sc.stats.entropy,axis = len(Nx.shape)-1,arr = Nx))
-        Hy = np.nan_to_num(np.apply_along_axis(sc.stats.entropy,axis = len(Nx.shape)-1,arr = Ny))
+        Hx = np.nan_to_num(np.apply_along_axis(entropy,axis = len(Nx.shape)-1,arr = Nx))
+        Hy = np.nan_to_num(np.apply_along_axis(entropy,axis = len(Nx.shape)-1,arr = Ny))
         Hx = np.append(Hx,[]) ; Hy = np.append(Hy,[])
         Ux = np.array([np.log2(dims[0])]*len(Hx)) ; Uy = np.array([np.log2(dims[0])]*len(Hy))
-        Hxy = np.apply_along_axis(sc.stats.entropy,axis = 1, arr = Nxy.reshape(np.product(dims[0:-2]),np.product([dims[-2],dims[-1]])) )
+        Hxy = np.apply_along_axis(entropy,axis = 1, arr = Nxy.reshape(np.product(dims[0:-2]),np.product([dims[-2],dims[-1]])) )
 
         #DataFrame creation
 
@@ -127,7 +125,7 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
 
         if (any(df.columns.isnull())):
             #' Delete names and append new ones
-            warnings.warn("No names for columns: providing variable names!")
+            warning("No names for columns: providing variable names!")
             #Apply dummy names 
             df.columns = list(map(lambda x: "x"+str(x), range(len(df.columns))))
 

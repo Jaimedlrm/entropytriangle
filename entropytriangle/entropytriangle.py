@@ -2,7 +2,6 @@ import sys
 from .inverted_ternary import inverted_ternary
 from .ternary import ternary_axes_subplot
 
-from matplotlib import rc
 from .coordsentropic import *
 
 def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 0.08 , gridl = 5 , ticks_size = 15):
@@ -49,7 +48,7 @@ def etplot (edf, scale = 100 , fonts = 30 , multiple = 5 ,s_mk = 150 , offset = 
     #CMET PLOT
     elif(hasCmetEntropicCoords(edf)):
 
-        figure, tax = ternary.figure(scale=scale)
+        figure, tax = ternary_axes_subplot.figure(scale=scale)
         figure.set_size_inches(25, 25)
         tax.boundary(linewidth=2.0)
         tax.gridlines(multiple = gridl, color="blue")

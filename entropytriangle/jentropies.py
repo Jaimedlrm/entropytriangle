@@ -1,9 +1,10 @@
-import sys                          #' Sys.Exit 
-import warnings                     #' Warnings 
-
 import numpy as np                  #' Numpy 
-import pandas as pd                 #' DataFrames manipulation
-import scipy as sc               
+import pandas as pd                 #' DataFrames manipulation        
+
+
+from sys import exit as exit
+from warnings import warn as warning
+from scipy.stats import entropy as entropy
 
 from .auxfunc import * 
 
@@ -29,12 +30,12 @@ def jentropies2d(Nxy, base = 2):
     dims = Nxy.shape # dim is a tuple wiht dim[0] rows  and dim[1] columns
 
     if(len(dims) != 2):
-        sys.exit("It must be a 2 dimensions array")
+        exit("It must be a 2 dimensions array")
 
     Nx = Nxy.sum(axis = 1) ; Ny = Nxy.sum(axis = 0) 
-    Hx = sc.stats.entropy(Nx , base = base) ; Hy = sc.stats.entropy(Ny , base = base)
+    Hx = entropy(Nx , base = base) ; Hy = entropy(Ny , base = base)
     Ux = np.log2(dims[0]) ; Uy = np.log2(dims[1])
-    Hxy = sc.stats.entropy(Nxy.reshape(np.prod(dims)), base  = base)
+    Hxy = entropy(Nxy.reshape(np.prod(dims)), base  = base)
     VI_P = [(Hxy-Hy),(Hxy-Hx)]
 
     #edf = pd.DataFrame([Ux,Uy,Hx,Hy,Hxy], columns = ['Ux','Uy','Hx','Hy','Hxy'])
@@ -70,9 +71,9 @@ def jentropies_table(Nxy, base = 2):
     dims = Nxy.shape # dim is a tuple wiht dim[0] rows  and dim[1] columns
 
     if(len(dims) < 2):
-        sys.exit("Cannot process joint entropies for tables with less than 2 dimensions")
+        exit("Cannot process joint entropies for tables with less than 2 dimensions")
 
-    if (dims[1] < 2 or dims[2] < 2):
+    if (dims[len(dims)-2] < 2 or dims[len(dims)-1] < 2):
         stop("jentropies are not defined for distributions with a singleton domain.")
 
     if (len(dims) == 2):
@@ -95,7 +96,7 @@ def jentropies_table(Nxy, base = 2):
 
 
 
-def jentorpies_df(X,Y , base = 2):
+def jentropies_df(X,Y , base = 2):
 
     """
     Channel Entropy decomposition of two dataframes X and Y
@@ -116,26 +117,26 @@ def jentorpies_df(X,Y , base = 2):
     dimx = X.shape ; dimy = Y.shape
     
     if(not isinstance(X,pd.DataFrame)):
-        sys.exit("Can only work with Data Frames! (X it´s not a DataFrame)")
+        exit("Can only work with Data Frames! (X it´s not a DataFrame)")
     
     if(not isinstance(Y,pd.DataFrame)):
-        sys.exit("Can only work with Data Frames! (Y it´s not a DataFrame)")   
+        exit("Can only work with Data Frames! (Y it´s not a DataFrame)")   
     
     if (dimx[0] == 0 or dimx[1] == 0):
-        sys.exit("Can only work with non-empty data.frames X!")
+        exit("Can only work with non-empty data.frames X!")
 
     if (dimy[0] == 0 or dimy[1] == 0):
-        sys.exit("Can only condition on non-empty data.frame Y!")
+        exit("Can only condition on non-empty data.frame Y!")
 
     if (dimx[0] != dimy[0]):	
-        sys.exit("Can only condition on variable lists with the same number of instances!")
+        exit("Can only condition on variable lists with the same number of instances!")
 
     if (not(all(X.dtypes)=='category')):
-        warnings.warn("Discretizing data from X DataFrame before entropy calculation!") #' Throwing a Warning for communicating a discretization of data
+        warning("Discretizing data from X DataFrame before entropy calculation!") #' Throwing a Warning for communicating a discretization of data
         X = discretization(X)
 
     if (not(all(Y.dtypes)=='category')):
-        warnings.warn("Discretizing data from X DataFrame before entropy calculation!") #' Throwing a Warning for communicating a discretization of data
+        warning("Discretizing data from X DataFrame before entropy calculation!") #' Throwing a Warning for communicating a discretization of data
         Y = discretization(Y)
 
 

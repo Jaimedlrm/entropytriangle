@@ -1,16 +1,13 @@
-import sys                          #' Sys.Exit 
-import warnings                     #' Warnings 
-
-import numpy as np                  #' Numpy 
+import numpy as np                  
 import pandas as pd
-import scipy as sc                #' DataFrames manipulation
 import operator
-#import itertools
 
+from sys import exit as exit
+from warnings import warn as warning
+from scipy.stats import entropy as entropy
 from itertools import product
 from random import choice 
 from sklearn.preprocessing import LabelEncoder   #' Used for discretization
-
 from functools import reduce
 
 
@@ -18,10 +15,10 @@ def discretization (df , nbins = 1):
 
 
     if(not isinstance(df,pd.DataFrame)):
-        sys.exit("Can only work with Data Frames!")
+        exit("Can only work with Data Frames!")
     #' Rows or columns equal to zero?
     if (len(df.columns) == 0 or len(df.index) == 0): 
-        sys.exit("Can only work with non-empty Data Frames!")
+        exit("Can only work with non-empty Data Frames!")
     
     if(nbins == 1):
         nbins = int(len(df.index)*(1/3))
@@ -32,7 +29,7 @@ def discretization (df , nbins = 1):
 
         #Object -> String 
         #Numeric -> (Float o int)
-        warnings.warn("Discretizing data!")
+        warning("Discretizing data!")
 
         df.update(df.select_dtypes(exclude = ['float64',np.int]).apply((lambda x : lb.fit_transform(x)), axis = 0))
         df.update(df.select_dtypes(include = ['float64',np.int]).apply((lambda x : pd.cut(x, bins = nbins , labels = list(range(nbins))))).astype('object'))
@@ -42,7 +39,7 @@ def discretization (df , nbins = 1):
     else: 
 
         ##warning
-        sys.exit("Number of bins for discretizing must be integer")
+        exit("Number of bins for discretizing must be integer")
 
     return disc
 
@@ -74,7 +71,7 @@ def expand_grid(data_dict):
 def ent(data , base = 2):
     
     p_data = data.value_counts()/len(data) # calculates the probabilities
-    entropy = np.nan_to_num(sc.stats.entropy(p_data , base = base))  # input probabilities to get the entropy 
+    entropy = np.nan_to_num(entropy(p_data , base = base))  # input probabilities to get the entropy 
     
     return entropy
 
