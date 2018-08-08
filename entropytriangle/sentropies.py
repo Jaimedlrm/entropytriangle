@@ -99,11 +99,11 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
 
     """
 
-    dims = df.shape
-
     if(not isinstance(df,pd.DataFrame)):
         sys.exit("Can only work with Data Frames!")
 
+    dims = df.shape
+    
     if(dims[1] == 0 or dims[0] == 0): 
         sys.exit("Can only work with non-empty DataFrames!")
 

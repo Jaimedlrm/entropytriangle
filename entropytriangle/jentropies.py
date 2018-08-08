@@ -72,7 +72,7 @@ def jentropies_table(Nxy, base = 2):
     if(len(dims) < 2):
         sys.exit("Cannot process joint entropies for tables with less than 2 dimensions")
 
-    if (dims[1] < 2 or dims[2] < 2):
+    if (dims[len(dims)-2] < 2 or dims[len(dims)-1] < 2):
         stop("jentropies are not defined for distributions with a singleton domain.")
 
     if (len(dims) == 2):
@@ -113,14 +113,14 @@ def jentorpies_df(X,Y , base = 2):
 
     """
 
-    dimx = X.shape ; dimy = Y.shape
-    
     if(not isinstance(X,pd.DataFrame)):
         sys.exit("Can only work with Data Frames! (X it´s not a DataFrame)")
-    
+
     if(not isinstance(Y,pd.DataFrame)):
-        sys.exit("Can only work with Data Frames! (Y it´s not a DataFrame)")   
-    
+        sys.exit("Can only work with Data Frames! (Y it´s not a DataFrame)") 
+
+    dimx = X.shape ; dimy = Y.shape
+      
     if (dimx[0] == 0 or dimx[1] == 0):
         sys.exit("Can only work with non-empty data.frames X!")
 
