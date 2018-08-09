@@ -1,3 +1,10 @@
+'''
+
+Auxiliar functions used in the calculation of the Measures
+
+'''
+
+
 import numpy as np                  
 import pandas as pd
 import operator
@@ -44,7 +51,7 @@ def discretization (df , nbins = 1):
     return disc
 
 
-def df2matrix(df, nb = 5):
+def df2matrix(df, nb = 1):
 
     df = discretization(df,nb)
     li = list() ; dims = list() 
@@ -71,9 +78,9 @@ def expand_grid(data_dict):
 def ent(data , base = 2):
     
     p_data = data.value_counts()/len(data) # calculates the probabilities
-    entropy = np.nan_to_num(entropy(p_data , base = base))  # input probabilities to get the entropy 
+    entr = np.nan_to_num(entropy(p_data , base = base))  # input probabilities to get the entropy 
     
-    return entropy
+    return entr
 
 
 def sjoin(df,lis,sep=''):
@@ -87,7 +94,7 @@ def condentropies(df, base = 2):
     cond = list() ; ncol = df.columns
     total = ent(sjoin(df,lis = ncol),base = base)
     for i in range(len(df.columns)): 
-        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]])))
+        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]]),base = base))
 
     return cond 
 

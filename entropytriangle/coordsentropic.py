@@ -1,3 +1,10 @@
+'''
+
+Functions used for calculating variables used in the Entropy Triangle Plotting phase
+
+'''
+
+
 import pandas as pd          # DataFrames manipulation
 import matplotlib.pyplot as plt
 from random import choice
@@ -142,25 +149,25 @@ def entcoords(df,scale=100):
     return coor
 
 
-def get_cmap(number, cname = 'hsv'):
+def get_cmap(number):
 
     """
-    Used for generating a set of random colors in order to differenciate the coordinates of each variable in the diagram
+    Used for generating a set of random colors in order to differenciate the coordinates of each variable in the diagram. 
+    A series of color maps can be applied (It will be randomly selected)
 
-    > colors_markers = get_cmap(len(df.index), name = 'hsv')
+    > colors_markers = get_cmap(len(df.index))
 
     Parameters
     ----------
     number : Number of colours (1 per variable)
-    cname : Color map instance ('hsv')
 
     Returns
     ----------
     colors : Returns a set of colors for creating the scatter plot (matplotlib.colors.LinearSegmentedColormap)
 
     """
-
-    return plt.cm.get_cmap(cname , number)
+    cmaps = list(['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds','YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu','GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn'])
+    return plt.cm.get_cmap(choice(cmaps) , number)
 
 
 
@@ -170,3 +177,9 @@ def markers(n) :
 
     for i in range(n) : mk.append(choice(filled_markers))
     return mk
+
+def varnames (li):
+    
+    return dict( (name,eval(name)) for name in li )
+    
+    

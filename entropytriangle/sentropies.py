@@ -1,5 +1,8 @@
-import numpy as np                  #' Numpy 
-import pandas as pd                 #' DataFrames manipulation    
+'''
+
+Functions used for calculating entropic measures (SMET Triangle)
+
+'''
 
 from sys import exit as exit
 from warnings import warn as warning
@@ -8,7 +11,7 @@ from scipy.stats import entropy as entropy
 from .auxfunc import * 
 
 def sentropies_table(Nxy,base = 2):
-
+    
     """
     Source Entropy decomposition of a contingency matrix
 
@@ -81,7 +84,7 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
     Source Entropy decomposition of a dataframe
     Given a dataframe, provide the dual or the aggregate entropy decomposition of the dataframe
 
-    > edf = sentropies_table(df, base = 2)
+    > edf = sentropies_df(df, type = 'total, base = 2, nbins = 1)
 
     Parameters
     ----------
@@ -100,13 +103,13 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
     dims = df.shape
 
     if(not isinstance(df,pd.DataFrame)):
-        sys.exit("Can only work with Data Frames!")
+        exit("Can only work with Data Frames!")
 
     if(dims[1] == 0 or dims[0] == 0): 
-        sys.exit("Can only work with non-empty DataFrames!")
+        exit("Can only work with non-empty DataFrames!")
 
     if (not(all(df.dtypes)=='category')):
-        warnings.warn("Discretizing data from X DataFrame before entropy calculation!")
+        warning("Discretizing data from X DataFrame before entropy calculation!")
         df = discretization(df , nbins)
 
     H_Uxi = df.apply((lambda x : np.log2(len(pd.unique(x)))), axis = 0).values
@@ -118,7 +121,6 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
         VI_Pxi = H_Pxi
 
     else:
-
         VI_Pxi = condentropies(df)
 
     if (type == "total") : # TOTAL decomposition & Aggregates
@@ -132,7 +134,7 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
         #DataFrame Creation
         edf = pd.DataFrame({'Name': list(df.columns) , 'H_Uxi': H_Uxi , 'H_Pxi':H_Pxi ,'DeltaH_Pxi': H_Uxi - H_Pxi ,'M_Pxi': H_Pxi - VI_Pxi , 'VI_Pxi': VI_Pxi}, columns = ['Name','H_Uxi','H_Pxi','DeltaH_Pxi','M_Pxi','VI_Pxi'])
         edf = edf.set_index('Name')
-        edf.loc['All'] = edf.sum(axis = 0)
+        edf.loc['AGGREGATE'] = edf.sum(axis = 0)
 
 
     else :  #return only an aggregate with the DUAL total correlation D_Px
@@ -141,11 +143,53 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
         H_Px = ent(sjoin(df,lis = df.columns))
         VI_Px = np.sum(VI_Pxi)
 
-        edf = pd.DataFrame({'Name' : ['All'] , 'H_Ux' : H_Ux , 'H_Px'  : H_Px , 'DeltaH_Px' : (H_Ux - H_Px) ,'D_Px' : H_Px - VI_Px , 'VI_Px' : VI_Px }, columns = ['Name','H_Ux','H_Px','DeltaH_Px','D_Px','VI_Px'])
+        edf = pd.DataFrame({'Name' : ['AGGREGATE'] , 'H_Ux' : H_Ux , 'H_Px'  : H_Px , 'DeltaH_Px' : (H_Ux - H_Px) ,'D_Px' : H_Px - VI_Px , 'VI_Px' : VI_Px }, columns = ['Name','H_Ux','H_Px','DeltaH_Px','D_Px','VI_Px'])
         edf = edf.set_index('Name')
 
     return edf
 
 
 
+def sentropieslist(li, names = None, returntype = 'Aggregate' , type = 'total', base  = 2 , nbins = 1):
+    
+    """
+    Source Entropy decomposition of a list of dataframes
+    Given a list of dataframe, provide the dual or the aggregate entropy decomposition of each dataframe appended on the list
 
+    > edf = sentropieslist(df, base = 2)
+
+    Parameters
+    ----------
+
+    Returns
+    ----------
+    edf : Pandas DataFrame containing the values of the entropies calculated
+
+    if the type = "total" then the function calculates the Total Decomposition & Aggregates
+    else if  type = "dual" then it will calculate the dual Decomposition & Aggregates
+
+    """
+
+    if(not isinstance(li, list)):
+        exit('This function only works with LISTS of Dataframes')
+    
+    if(not all(isinstance(li[x],pd.DataFrame) for x in range(len(li)))):
+        exit('All values must be instances of DataFrames for entropy calculations')
+        
+    if(not names):
+        warning('No names founded, Providing Dummy names')
+        names = list(map(lambda x: "x"+str(x), range(len(li))))
+    
+    edf = list() ; edfaux = list()
+    for i in range(len(li)): 
+        edf.append(sentropies_df(li[i],base = base, type = type , nbins = nbins))
+    
+    if(returntype == 'Aggregate'):
+        for j in range(len(edf)): edfaux.append(edf[j].iloc[edf[j].index == 'AGGREGATE'].rename({'AGGREGATE': names[j]}))
+        total = pd.concat(edfaux, ignore_index=False)
+        
+        return total
+    
+    else:
+        return edf
+        
