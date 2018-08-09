@@ -87,8 +87,7 @@ def etplot (edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 5 , ticks_size =
         tax.boundary(linewidth=2.0)
         tax.gridlines(multiple = gridl, color="blue")
 
-        mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index),'Blues') ; names = list(edf.index)
-        #mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
+        mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
 
         for i in range(len(edf.index)):
             tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.3')
@@ -100,11 +99,13 @@ def etplot (edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 5 , ticks_size =
 
     else: 
         
-        sys.exit("Entropic coordinates needed for the diagram plotting")
+        exit("Entropic coordinates needed for the diagram plotting")
 
     tax.ticks(axis='lbr', linewidth=1, multiple = gridl , fontsize = ticks_size )
     tax.clear_matplotlib_ticks()
     tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
+    
+    tax.show()
     
     return points
 

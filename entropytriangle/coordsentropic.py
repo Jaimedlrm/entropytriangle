@@ -4,7 +4,7 @@ Functions used for calculating variables used in the Entropy Triangle Plotting p
 
 '''
 
-
+from numpy import nan_to_num as nan_to_num
 import pandas as pd          # DataFrames manipulation
 import matplotlib.pyplot as plt
 from random import choice
@@ -138,7 +138,7 @@ def entcoords(df,scale=100):
 
     for i in range(df.shape[0]):
 
-        if(df.iloc[i].values[2:6].sum()>1):
+        if(nan_to_num(df.iloc[i].values[2:6]).sum()>1):
             coor.append((df.iloc[i].values[2:6])/df.iloc[i].values[0])
 
         else:

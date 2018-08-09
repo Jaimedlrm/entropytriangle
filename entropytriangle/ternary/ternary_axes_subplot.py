@@ -186,7 +186,7 @@ class TernaryAxesSubplot(object):
         """
 
         if not position:
-            position = (0.5, -offset / 2., 0.5)
+            position = (0.5-1.3*offset, 2* offset, 0.5)
         self._corner_labels["bottom"] = (label, position, rotation, kwargs)
 
     def right_corner_label(self, label, position=None, rotation=0, offset=0.08,

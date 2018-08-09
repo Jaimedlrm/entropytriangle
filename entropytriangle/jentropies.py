@@ -141,15 +141,15 @@ def jentropies_df(X,Y , base = 2 , nbins = 1):
         warning("Discretizing data from X DataFrame before entropy calculation!") #' Throwing a Warning for communicating a discretization of data
         Y = discretization(Y , nbins)
 
-
-    VI_P = np.array([condentropy_df(X,Y,base = base),condentropy_df(Y,X,base = base)])
-
     H_U = np.array([np.sum(X.apply((lambda x : np.log2(len(pd.unique(x)))), axis = 0).values) , np.sum(Y.apply((lambda x : np.log2(len(pd.unique(x)))), axis = 0).values)])
-    H_P = np.array([np.sum(X.apply(ent,axis=0).values) , np.sum(Y.apply(ent,axis=0).values)])
-
-    edf = pd.DataFrame({'Type' : ['X','Y'], 'H_U': H_U , 'H_P': H_P , 'DeltaH_P' : H_U - H_P, 'M_P' : H_P - VI_P, 'VI_P ' : VI_P }, columns = ['Type','H_U','H_P','DeltaH_P','M_P','VI_P'])
+    H_P = np.array([ent(sjoin(X,lis = X.columns)),ent(sjoin(Y,lis = Y.columns))])
+    VI_P = np.array([condentropy_df(X,Y,base = base),condentropy_df(Y,X,base = base)])
+    
+    edf = pd.DataFrame({'Type' : ['X','Y'], 'H_U': H_U , 'H_P': H_P , 'DeltaH_P' : H_U - H_P, }, columns = ['Type','H_U','H_P','DeltaH_P'])
+    edf['M_P'] = H_P - VI_P
+    edf['VI_P'] = VI_P
     edf = edf.set_index('Type')
-    edf.loc['Type'] = edf.sum(axis = 0)
+    edf.loc['XY'] = edf.sum(axis = 0)
 
     return edf
 
