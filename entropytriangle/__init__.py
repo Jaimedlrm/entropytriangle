@@ -1,4 +1,4 @@
-from .auxfunc import (discretization, df2matrix, sjoin, condentropies)
+from .auxfunc import (discretization, df2matrix, sjoin, condentropy)
 
 from .sentropies import *
 from .jentropies import jentropies_table, jentropies_df

@@ -173,7 +173,7 @@ def get_cmap(number):
 
 def markers(n) :
 
-    filled_markers = ('o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd', 'P', 'X') ; mk = list()
+    filled_markers = ('o', 'v', '^', '<', '>', '8', 's', 'p', 'h', 'H', 'D', 'd', 'P', 'X') ; mk = list()
 
     for i in range(n) : mk.append(choice(filled_markers))
     return mk

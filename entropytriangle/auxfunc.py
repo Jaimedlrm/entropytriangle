@@ -4,7 +4,6 @@ Auxiliar functions used in the calculation of the Measures
 
 '''
 
-
 import numpy as np                  
 import pandas as pd
 import operator
@@ -28,25 +27,22 @@ def discretization (df , nbins = 1):
         exit("Can only work with non-empty Data Frames!")
     
     if(nbins == 1):
-        nbins = int(len(df.index)*(1/3))
-    print(nbins)
+        nbins = int(len(df.index)**(1/3))
+    
+    
+
+    if (not isinstance(nbins,np.int)):
+        nbins = int(nbins)
+    
+    #Object -> String 
+    #Numeric -> (Float o int)
+    warning("Discretizing data!")
     lb = LabelEncoder()
+    
+    df.update(df.select_dtypes(exclude = ['float64',np.int]).apply((lambda x : lb.fit_transform(x)), axis = 0))
+    df.update(df.select_dtypes(include = ['float64',np.int]).apply((lambda x : pd.cut(x, bins = nbins , labels = list(range(nbins))))).astype('object'))
 
-    if (isinstance(nbins,np.int)):
-
-        #Object -> String 
-        #Numeric -> (Float o int)
-        warning("Discretizing data!")
-
-        df.update(df.select_dtypes(exclude = ['float64',np.int]).apply((lambda x : lb.fit_transform(x)), axis = 0))
-        df.update(df.select_dtypes(include = ['float64',np.int]).apply((lambda x : pd.cut(x, bins = nbins , labels = list(range(nbins))))).astype('object'))
-
-        disc = df.astype('category')
-
-    else: 
-
-        ##warning
-        exit("Number of bins for discretizing must be integer")
+    disc = df.astype('category')
 
     return disc
 
@@ -88,7 +84,8 @@ def sjoin(df,lis,sep=''):
     return reduce(lambda x, y: x.astype(str).str.cat(y.astype(str), sep=sep),[df[col] for col in lis])
 
 
-def condentropies(df, base = 2):
+
+def condentropy(df, base = 2):
 
 
     cond = list() ; ncol = df.columns
@@ -98,7 +95,36 @@ def condentropies(df, base = 2):
 
     return cond 
 
-"""
+
+def condentropy_joint(X,Y,base = 2):
+    
+    joint = pd.merge(X, Y, left_index = True, right_index = True)
+    cond = ent(sjoin(joint,lis = joint.columns),base = base) - ent(sjoin(Y,lis = Y.columns),base = base)
+    
+    return cond
+
+#VARIATION WITH MERGING IN EVERY CONDENTROPY CALCULATION
+
+'''
+def condentropy(df, base = 2):
+
+
+    cond = list() ; ncol = df.columns
+    #total = ent(sjoin(df,lis = ncol),base = base)
+    for i in range(len(df.columns)): 
+        new = pd.merge(df[ncol[ncol != ncol[i]]],pd.DataFrame(df[ncol[i]]),left_index=True , right_index= True)
+        total = ent(sjoin(new, lis = new.columns),base =2)
+        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]]),base = base))
+
+    return cond 
+
+'''
+
+
+#Deprecated
+
+'''
+
 def condentropy_df(X,Y,base = 2):
 
     cond = list(); 
@@ -107,14 +133,5 @@ def condentropy_df(X,Y,base = 2):
     for i in range(len(X.columns)): 
         cond.append(ejoint - ent(sjoin(joint, lis = ncol[ncol != ncol[i]])))
     return cond
-"""
 
-def condentropy_df(X,Y,base = 2):
-
-    joint = pd.merge(X, Y, left_index = True, right_index = True)
-    cond = ent(sjoin(joint,lis = joint.columns),base = base) - ent(sjoin(Y,lis = Y.columns),base = base)
-    
-    return cond
-
-
-    
+'''

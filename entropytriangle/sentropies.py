@@ -107,8 +107,8 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
 
     if(dims[1] == 0 or dims[0] == 0): 
         exit("Can only work with non-empty DataFrames!")
-
-    if (not(all(df.dtypes)=='category')):
+    
+    if (not(all(df.dtypes=='category'))):
         warning("Discretizing data from X DataFrame before entropy calculation!")
         df = discretization(df , nbins)
 
@@ -121,8 +121,10 @@ def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
         VI_Pxi = H_Pxi
 
     else:
-        VI_Pxi = condentropies(df)
-
+        
+        VI_Pxi = condentropy(df, base = base)
+        
+        
     if (type == "total") : # TOTAL decomposition & Aggregates
 
         if (any(df.columns.isnull())):
