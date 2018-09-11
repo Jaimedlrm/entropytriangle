@@ -28,8 +28,6 @@ def discretization (df , nbins = 1):
     
     if(nbins == 1):
         nbins = int(len(df.index)**(1/3))
-    
-    
 
     if (not isinstance(nbins,np.int)):
         nbins = int(nbins)

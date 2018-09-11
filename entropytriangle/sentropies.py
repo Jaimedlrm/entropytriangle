@@ -10,75 +10,8 @@ from scipy.stats import entropy as entropy
 
 from .auxfunc import * 
 
-def sentropies_table(Nxy,base = 2):
-    
-    """
-    Source Entropy decomposition of a contingency matrix
 
-    Given a contingency matrix, provide one row of entropy coordinates.
-
-    Parameters
-    ----------
-    Nxy : Contingency matrix of the database for calculating the source entropies
-
-    Base : The logarithm to be used in working out the sentropies (Default "log2")
-
-     Returns
-    -------
-    edf : Pandas DataFrame containing the values of the entropies calculated
-
-          For 2d contingency tables it will provide a single row
-          For nd contingency tables (n>2) it will provide a set of rows of the Entropies calculated per dimension (x = rows , y = columns)
-
-    """
-
-    dims = Nxy.shape # dim is a tuple wiht dim[0] rows  and dim[1] columns
-
-    if(len(dims) < 2 ): # dim less than 2
-        exit("Cannot process tables with less/more than 2 dimensions.")
-    #'stop('Cannot process tables with less/more than 2 dimensions.')
-
-    if(dims[0] < 2 | dims[1] < 2):
-        exit("Sentropies are not defined for distributions with a singleton domain.")
-    #'stop('Sentropies are not defined for distributions with a singleton domain.')
-
-    if (len(dims) == 2):
-
-        Nx = Nxy.sum(axis = 1) ; Ny = Nxy.sum(axis = 0)
-        Hx = entropy(Nx , base = base) ; Hy = sc.stats.entropy(Ny , base = base)
-        Ux = np.log2(dims[0]) ; Uy = np.log2(dims[1])
-        Hxy = entropy( Nxy.reshape(np.prod(dims)), base  = base)
-
-        df = pd.DataFrame({'Name': ['XY'],'Ux': Ux,'Uy': Uy,'Hx': Hx,'Hy': Hy, 'Hxy': Hxy})
-        df = df.set_index('Name')
-
-    else:
-
-        #axis  = 0 columns , axis = 1 rows 
-        #When n dimensions ->>>> (n,n-1,n-2,....,0,1)
-
-        dims = Nxy.shape
-        Nx = Nxy.sum(axis = len(dims)-1)
-        Ny = Nxy.sum(axis = len(dims)-2)
-        Hx = np.nan_to_num(np.apply_along_axis(entropy,axis = len(Nx.shape)-1,arr = Nx))
-        Hy = np.nan_to_num(np.apply_along_axis(entropy,axis = len(Nx.shape)-1,arr = Ny))
-        Hx = np.append(Hx,[]) ; Hy = np.append(Hy,[])
-        Ux = np.array([np.log2(dims[0])]*len(Hx)) ; Uy = np.array([np.log2(dims[0])]*len(Hy))
-        Hxy = np.apply_along_axis(entropy,axis = 1, arr = Nxy.reshape(np.product(dims[0:-2]),np.product([dims[-2],dims[-1]])) )
-
-        #DataFrame creation
-
-        df = pd.DataFrame({'Ux': Ux,'Uy': Uy,'Hx': Hx,'Hy': Hy, 'Hxy': np.nan_to_num(Hxy)} , columns = ['Ux','Hx','Uy','Hy','Hxy'])
-        df['Name'] = list(range(len(Hxy)))
-        df = df.set_index('Name')
-
-
-    return df
-
-
-
-
-def sentropies_df(df, type = "total" , base = 2 , nbins = 1 ):
+def sentropies(df, type = "total" , base = 2 , nbins = 1 ):
 
     """
     Source Entropy decomposition of a dataframe
@@ -184,7 +117,7 @@ def sentropieslist(li, names = None, returntype = 'Aggregate' , type = 'total', 
     
     edf = list() ; edfaux = list()
     for i in range(len(li)): 
-        edf.append(sentropies_df(li[i],base = base, type = type , nbins = nbins))
+        edf.append(sentropies(li[i],base = base, type = type , nbins = nbins))
     
     if(returntype == 'Aggregate'):
         for j in range(len(edf)): edfaux.append(edf[j].iloc[edf[j].index == 'AGGREGATE'].rename({'AGGREGATE': names[j]}))
@@ -195,3 +128,67 @@ def sentropieslist(li, names = None, returntype = 'Aggregate' , type = 'total', 
     else:
         return edf
         
+def sentropies_table(Nxy,base = 2):
+    
+    """
+    Source Entropy decomposition of a contingency matrix
+
+    Given a contingency matrix, provide one row of entropy coordinates.
+
+    Parameters
+    ----------
+    Nxy : Contingency matrix of the database for calculating the source entropies
+
+    Base : The logarithm to be used in working out the sentropies (Default "log2")
+
+     Returns
+    -------
+    edf : Pandas DataFrame containing the values of the entropies calculated
+
+          For 2d contingency tables it will provide a single row
+          For nd contingency tables (n>2) it will provide a set of rows of the Entropies calculated per dimension (x = rows , y = columns)
+
+    """
+
+    dims = Nxy.shape # dim is a tuple wiht dim[0] rows  and dim[1] columns
+
+    if(len(dims) < 2 ): # dim less than 2
+        exit("Cannot process tables with less/more than 2 dimensions.")
+    #'stop('Cannot process tables with less/more than 2 dimensions.')
+
+    if(dims[0] < 2 | dims[1] < 2):
+        exit("Sentropies are not defined for distributions with a singleton domain.")
+    #'stop('Sentropies are not defined for distributions with a singleton domain.')
+
+    if (len(dims) == 2):
+
+        Nx = Nxy.sum(axis = 1) ; Ny = Nxy.sum(axis = 0)
+        Hx = entropy(Nx , base = base) ; Hy = sc.stats.entropy(Ny , base = base)
+        Ux = np.log2(dims[0]) ; Uy = np.log2(dims[1])
+        Hxy = entropy( Nxy.reshape(np.prod(dims)), base  = base)
+
+        df = pd.DataFrame({'Name': ['XY'],'Ux': Ux,'Uy': Uy,'Hx': Hx,'Hy': Hy, 'Hxy': Hxy})
+        df = df.set_index('Name')
+
+    else:
+
+        #axis  = 0 columns , axis = 1 rows 
+        #When n dimensions ->>>> (n,n-1,n-2,....,0,1)
+
+        dims = Nxy.shape
+        Nx = Nxy.sum(axis = len(dims)-1)
+        Ny = Nxy.sum(axis = len(dims)-2)
+        Hx = np.nan_to_num(np.apply_along_axis(entropy,axis = len(Nx.shape)-1,arr = Nx))
+        Hy = np.nan_to_num(np.apply_along_axis(entropy,axis = len(Nx.shape)-1,arr = Ny))
+        Hx = np.append(Hx,[]) ; Hy = np.append(Hy,[])
+        Ux = np.array([np.log2(dims[0])]*len(Hx)) ; Uy = np.array([np.log2(dims[0])]*len(Hy))
+        Hxy = np.apply_along_axis(entropy,axis = 1, arr = Nxy.reshape(np.product(dims[0:-2]),np.product([dims[-2],dims[-1]])) )
+
+        #DataFrame creation
+
+        df = pd.DataFrame({'Ux': Ux,'Uy': Uy,'Hx': Hx,'Hy': Hy, 'Hxy': np.nan_to_num(Hxy)} , columns = ['Ux','Hx','Uy','Hy','Hxy'])
+        df['Name'] = list(range(len(Hxy)))
+        df = df.set_index('Name')
+
+
+    return df

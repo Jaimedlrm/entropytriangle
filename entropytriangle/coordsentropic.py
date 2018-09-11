@@ -180,6 +180,6 @@ def markers(n) :
 
 def varnames (li):
     
-    return dict( (name,eval(name)) for name in li )
+    return dict((name,eval(name)) for name in li )
     
     
