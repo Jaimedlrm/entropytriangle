@@ -56,7 +56,9 @@ def jentropies(X,Y , base = 2 , nbins = 1):
 
     H_U = np.array([np.sum(X.apply((lambda x : np.log2(len(pd.unique(x)))), axis = 0).values) , np.sum(Y.apply((lambda x : np.log2(len(pd.unique(x)))), axis = 0).values)])
     H_P = np.array([ent(sjoin(X,lis = X.columns)),ent(sjoin(Y,lis = Y.columns))])
-    VI_P = np.array([condentropy_joint(X,Y,base = base),condentropy_joint(Y,X,base = base)])
+    
+    #Calculation of Conditional Entropies of the Random Vectors
+    VI_P = np.array([condentropy(X,Y,base = base),condentropy(Y,X,base = base)])
     
     edf = pd.DataFrame({'Type' : ['X','Y'], 'H_U': H_U , 'H_P': H_P , 'DeltaH_P' : H_U - H_P, }, columns = ['Type','H_U','H_P','DeltaH_P'])
     edf['M_P'] = H_P - VI_P
@@ -72,7 +74,7 @@ def jentropies_binary(Nxy, base = 2):
     """
     Joint Entropy decomposition of a 2d contingency matrix due to a channel transmission
 
-    > edf = jentropies2d (Nxy, base = 2)
+    > edf = jentropies_binary (Nxy, base = 2)
 
     Parameters
     ----------
@@ -96,7 +98,6 @@ def jentropies_binary(Nxy, base = 2):
     Hxy = entropy(np.ravel(Nxy),base = base)
     VI_P = [(Hxy-Hy),(Hxy-Hx)]
 
-    #edf = pd.DataFrame([Ux,Uy,Hx,Hy,Hxy], columns = ['Ux','Uy','Hx','Hy','Hxy'])
     edf = pd.DataFrame({'Type':['X','Y'],'H_P':[Hx,Hy] , 'H_U' : [Ux,Uy] ,'DeltaH_P':[(Ux - Hx) , (Uy - Hy)] , 'M_P': [Hx - VI_P[0] , Hy - VI_P[1]] , 'VI_P': VI_P }, columns = ['Type','H_U','H_P','DeltaH_P','M_P','VI_P'])
     edf = edf.append(edf.apply(lambda x: np.sum(x,axis=0),axis = 0), ignore_index=True)
     #edf.loc['All'] = edf.sum(axis = 0)

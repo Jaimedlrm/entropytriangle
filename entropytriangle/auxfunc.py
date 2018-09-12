@@ -68,9 +68,17 @@ def expand_grid(data_dict):
 ## d = {c: sorted(list(df[c].unique())) for c in df.columns} 
 
 
-# Input a pandas series 
+
 def ent(data , base = 2):
     
+    '''
+    Entropy Calculation for Series.
+    
+    '''
+   
+    if(isinstance(data, pd.DataFrame)):
+        data = sjoin(data,lis = data.columns)
+
     p_data = data.value_counts()/len(data) # calculates the probabilities
     entr = np.nan_to_num(entropy(p_data , base = base))  # input probabilities to get the entropy 
     
@@ -82,6 +90,37 @@ def sjoin(df,lis,sep=''):
     return reduce(lambda x, y: x.astype(str).str.cat(y.astype(str), sep=sep),[df[col] for col in lis])
 
 
+def condentropy(X,Y = None, base = 2):
+    
+    if(isinstance(Y, type(None))):
+        Hres = ent(X,base = base)
+        
+    else:
+        
+        if(isinstance(Y, pd.Series)):
+            Y = Y.to_frame(name = None)
+        if(isinstance(X, pd.Series)):
+            X = X.to_frame(name = None)
+        
+        joint = pd.merge(Y,X, left_index = True, right_index = True)
+        Hyx = ent(joint,base = base)
+        Hy = ent(Y,base = base) 
+        
+        Hres = Hyx - Hy
+        
+    return Hres
+
+
+'''
+
+Cambios Hoy 11Sep
+
+def condentropy_joint(X,Y,base = 2):
+    
+    joint = pd.merge(X, Y, left_index = True, right_index = True)
+    cond = ent(sjoin(joint,lis = joint.columns),base = base) - ent(sjoin(Y,lis = Y.columns),base = base)
+    
+    return cond
 
 def condentropy(df, base = 2):
 
@@ -94,16 +133,19 @@ def condentropy(df, base = 2):
     return cond 
 
 
-def condentropy_joint(X,Y,base = 2):
-    
-    joint = pd.merge(X, Y, left_index = True, right_index = True)
-    cond = ent(sjoin(joint,lis = joint.columns),base = base) - ent(sjoin(Y,lis = Y.columns),base = base)
-    
-    return cond
+def condentropy(df, base = 2):
 
-#VARIATION WITH MERGING IN EVERY CONDENTROPY CALCULATION
 
-'''
+    cond = list() ; ncol = df.columns
+    total = ent(sjoin(df,lis = ncol),base = base)
+    for i in range(len(df.columns)): 
+        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]]),base = base))
+
+    return cond 
+
+Cambios Hoy 11Sep
+
+
 def condentropy(df, base = 2):
 
 

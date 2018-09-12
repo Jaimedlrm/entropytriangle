@@ -55,7 +55,9 @@ def sentropies(df, type = "total" , base = 2 , nbins = 1 ):
 
     else:
         
-        VI_Pxi = condentropy(df, base = base)
+        VI_Pxi = list()
+        for i in range(len(df.columns)):
+            VI_Pxi.append(condentropy(df[df.columns[i]],df[df.columns.drop(df.columns[i])]))
         
         
     if (type == "total") : # TOTAL decomposition & Aggregates

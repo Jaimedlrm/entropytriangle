@@ -5,6 +5,7 @@ Functions used for calculating variables used in the Entropy Triangle Plotting p
 '''
 
 from numpy import nan_to_num as nan_to_num
+from warnings import warn as warning
 import pandas as pd          # DataFrames manipulation
 import matplotlib.pyplot as plt
 from random import choice
@@ -172,14 +173,12 @@ def get_cmap(number):
 
 
 def markers(n) :
-
-    filled_markers = ('o', 'v', '^', '<', '>', '8', 's', 'p', 'h', 'H', 'D', 'd', 'P', 'X') ; mk = list()
-
+    
+    filled_markers = ('o', '+', '*', 'x','^', '<', '>', '8', 's', 'p', 'h') ; mk = list()
     for i in range(n) : mk.append(choice(filled_markers))
     return mk
 
 def varnames (li):
-    
     return dict((name,eval(name)) for name in li )
     
     

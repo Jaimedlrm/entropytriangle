@@ -14,7 +14,7 @@ from .coordsentropic import *
 
 
 
-def etplotjoint(lis, names, scale = 100, fonts = 30, s_mk = 200, gridl = 5, ticks_size = 15, pltscale = 20):
+def etplotjoint(lis, names, scale = 100, fonts = 30, s_mk = 200, gridl = 20, ticks_size = 15, pltscale = 20):
     
     
     """
@@ -70,21 +70,21 @@ def etplotjoint(lis, names, scale = 100, fonts = 30, s_mk = 200, gridl = 5, tick
          
         if (hasSplitSmetCoords(lis[0])):
             
-            tax.set_title("Source Multivariate split entropies (SMET)", fontsize = fonts + 10)
+            tax.set_title("Source Multivariate split entropies (SMET)", fontsize = fonts + 5)
             tax.left_axis_label(r"$\Delta H'_{P_{X_i}}$", fontsize=fonts)
             tax.right_axis_label(r"$ M'_{P_{X_i}}$", fontsize=fonts)
             tax.bottom_axis_label(r"$ H'_{P_{X_i|X_i^c}}$", fontsize=fonts)
 
         elif (hasAggregateSmetCoords(lis[0])):
 
-            tax.set_title("Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 10)
+            tax.set_title("Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 5)
             tax.left_axis_label(r"$\Delta H'_{Pi_{X}}$", fontsize=fonts)
             tax.right_axis_label(r"$ M'_{P_{X}}$", fontsize=fonts)
             tax.bottom_axis_label(r"$ VI'_{P_{X}}$", fontsize=fonts)
 
         elif (hasDualAggregateSmetCoords(lis[0])):
 
-            tax.set_title("Dual Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 10)
+            tax.set_title("Dual Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 5)
             tax.left_axis_label(r"$\Delta H'_{P_{X}}$", fontsize=fonts)
             tax.right_axis_label(r"$ D'_{P_{X}}$", fontsize=fonts)
             tax.bottom_axis_label(r"$ VI'_{P_{X}}$", fontsize=fonts)
@@ -104,7 +104,7 @@ def etplotjoint(lis, names, scale = 100, fonts = 30, s_mk = 200, gridl = 5, tick
 
 
 
-def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 5 , ticks_size = 15 , pltscale = 20):
+def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 20):
     
     """
     Function for creating and showing the plots of the entropy triangle, independentlly of the type of triangle (SMET or CMET)
@@ -164,21 +164,21 @@ def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 5 ,
 
         if (hasSplitSmetCoords(edf)):
 
-            tax.set_title("Source Multivariate split entropies (SMET)", fontsize = fonts + 10)
+            tax.set_title("Source Multivariate split entropies (SMET)", fontsize = fonts + 5)
             tax.left_axis_label(r"$\Delta H'_{P_{X_i}}$", fontsize=fonts)
             tax.right_axis_label(r"$ M'_{P_{X_i}}$", fontsize=fonts)
             tax.bottom_axis_label(r"$ H'_{P_{X_i|X_i^c}}$", fontsize=fonts)
 
         elif (hasAggregateSmetCoords(edf)):
 
-            tax.set_title("Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 10)
+            tax.set_title("Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 5)
             tax.left_axis_label(r"$\Delta H'_{Pi_{X}}$", fontsize=fonts)
             tax.right_axis_label(r"$ M'_{P_{X}}$", fontsize=fonts)
             tax.bottom_axis_label(r"$ VI'_{P_{X}}$", fontsize=fonts)
 
         elif (hasDualAggregateSmetCoords(edf)):
 
-            tax.set_title("Dual Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 10)
+            tax.set_title("Dual Aggregate Source Multivariate entropies (SMET)", fontsize = fonts + 5)
             tax.left_axis_label(r"$\Delta H'_{P_{X}}$", fontsize=fonts)
             tax.right_axis_label(r"$ D'_{P_{X}}$", fontsize=fonts)
             tax.bottom_axis_label(r"$ VI'_{P_{X}}$", fontsize=fonts)
@@ -187,16 +187,15 @@ def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 5 ,
     elif(hasCmetEntropicCoords(edf)):
 
         figure, tax = ternary_axes_subplot.figure(scale=scale)
-        figure.set_size_inches(20, 20)
+        figure.set_size_inches(pltscale, pltscale)
         tax.boundary(linewidth=2.0)
         tax.gridlines(multiple = gridl, color="blue")
 
         mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
-
         for i in range(len(edf.index)):
             tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.3')
 
-        tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 10)
+        tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 5)
         tax.left_axis_label(r"$ VI'_{P_\overline{XY}}$", fontsize=fonts)
         tax.right_axis_label(r"$ 2\cdot{I'_{P_\overline{XY}}}  $", fontsize=fonts)
         tax.bottom_axis_label(r"$\Delta H'_{P_\overline{XY}}$", fontsize=fonts)
@@ -217,4 +216,86 @@ def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 5 ,
 
 
 
+def cbetplot(edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17):
+    
+    if(not isinstance(edf,pd.DataFrame)):
+        exit("Can only work with Data Frames or lists of DataFrames! (df it´s not a DataFrame)")
+    
+    points = entcoords(edf, scale)
+    
+    if(hasCmetEntropicCoords(edf)):
+        
+        figure, tax = ternary_axes_subplot.figure(scale=scale)
+        figure.set_size_inches(pltscale, pltscale)
+        tax.boundary(linewidth=2.0)
+        tax.gridlines(multiple = gridl, color="blue")
 
+        mk = markers(len(edf.index))
+        colors = get_cmap(len(edf.index)) 
+        names = list([r"$K$",r"$\hat{K}}$",r"$ K\hat{X}}$"])
+
+        for i in range(len(edf.index)):
+            tax.scatter(points[i:i+1], s = s_mk , marker = mk[0], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.3')
+
+        tax.set_title("Channel Bivariate Entropy Triangle (CBET)", fontsize = fonts + 5)
+        tax.left_axis_label(r"$ VI_{P_{XY}}$", fontsize=fonts)
+        tax.right_axis_label(r"$ MI_{P_{XY}}  $", fontsize=fonts)
+        tax.bottom_axis_label(r"$\Delta H_{P_{X}\cdot{P_{Y}}}$", fontsize=fonts)
+
+    else: 
+        
+        exit("Entropic coordinates needed for the diagram plotting")
+
+    tax.ticks(axis='lbr', linewidth=1, multiple = gridl , fontsize = ticks_size )
+    tax.clear_matplotlib_ticks()
+    tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
+    
+    tax.show()
+    
+    
+    
+    
+    
+def cmetplot(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17):
+
+    if(not isinstance(edf, list)):
+        exit('This function only works with LISTS of Dataframes, maybe you can try the etplot function for an individual DataFrame plot')
+    
+    if(not all(isinstance(edf[x],pd.DataFrame) for x in range(len(edf)))):
+        exit('All values must be instances of DataFrames for entropy calculations')
+        
+    if(not names):
+        warning('No names founded, Providing Dummy names')
+        names = list(map(lambda x: "Features"+str(len(edf)-x)+"PC", range(len(edf))))
+             
+    
+    if(all(hasCmetEntropicCoords(edf[l]) for l in range(len(edf)))):
+
+        figure, tax = ternary_axes_subplot.figure(scale=scale)
+        figure.set_size_inches(pltscale, pltscale)
+        tax.boundary(linewidth=2.0)
+        tax.gridlines(multiple = gridl, color="blue")
+        
+        
+        colors = get_cmap(len(edf[0].index))
+        for i in range(len(edf)):
+            
+            points = entcoords(edf[i], scale)
+            mk = markers(1)*len(edf[i].index) ; names = list(edf[i].index+'-FT-'+str(len(edf)-i)+'-PC')
+            for j in range(len(edf[i].index)):
+                tax.scatter(points[j:j+1], s = s_mk , marker = mk[j], color = colors(j), label = names[j] ,edgecolor='black', linewidth='0.3')
+
+        tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 5)
+        tax.left_axis_label(r"$ VI'_{P_\overline{XY}}$", fontsize=fonts)
+        tax.right_axis_label(r"$ 2\cdot{I'_{P_\overline{XY}}}  $", fontsize=fonts)
+        tax.bottom_axis_label(r"$\Delta H'_{P_\overline{XY}}$", fontsize=fonts)
+
+    else: 
+        
+        exit("Entropic coordinates needed for the diagram plotting")
+
+    tax.ticks(axis='lbr', linewidth=1, multiple = gridl , fontsize = ticks_size )
+    tax.clear_matplotlib_ticks()
+    tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
+    
+    tax.show()

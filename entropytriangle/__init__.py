@@ -1,9 +1,9 @@
 from .auxfunc import (discretization, df2matrix, sjoin, condentropy)
 
 from .sentropies import *
-from .jentropies import jentropies_table, jentropies_df
+from .jentropies import *
 
-from .entropytriangle import etplot, etplotjoint
+from .entropytriangle import *
 
 from .ternary import *
 from .inverted_ternary import *
