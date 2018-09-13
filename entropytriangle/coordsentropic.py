@@ -167,14 +167,16 @@ def get_cmap(number):
     colors : Returns a set of colors for creating the scatter plot (matplotlib.colors.LinearSegmentedColormap)
 
     """
-    cmaps = list(['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds','YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu','GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn'])
+    #cmaps = list(['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds','YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu','GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn'])
+    cmaps = list(['spring','summer','autumn','winter','cool','Wistia'])
     return plt.cm.get_cmap(choice(cmaps) , number)
 
 
 
 def markers(n) :
     
-    filled_markers = ('o', '+', '*', 'x','^', '<', '>', '8', 's', 'p', 'h') ; mk = list()
+    #filled_markers = ('o', '+', '*', 'x','^', '<', '>', '8', 's', 'p', 'h') ; mk = list()
+    filled_markers = ('o') ; mk = list()
     for i in range(n) : mk.append(choice(filled_markers))
     return mk
 

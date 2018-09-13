@@ -104,7 +104,7 @@ def etplotjoint(lis, names, scale = 100, fonts = 30, s_mk = 200, gridl = 20, tic
 
 
 
-def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 20):
+def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 20, chart_title = ""):
     
     """
     Function for creating and showing the plots of the entropy triangle, independentlly of the type of triangle (SMET or CMET)
@@ -216,7 +216,7 @@ def etplot (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 
 
 
 
-def cbetplot(edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17):
+def cbetplot(edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17, chart_title = ""):
     
     if(not isinstance(edf,pd.DataFrame)):
         exit("Can only work with Data Frames or lists of DataFrames! (df it´s not a DataFrame)")
@@ -232,12 +232,16 @@ def cbetplot(edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size
 
         mk = markers(len(edf.index))
         colors = get_cmap(len(edf.index)) 
-        names = list([r"$K$",r"$\hat{K}}$",r"$ K\hat{X}}$"])
+        names = list([r"$K$",r"$\hat{K}}$",r"$ K\hat{K}}$"])
 
         for i in range(len(edf.index)):
             tax.scatter(points[i:i+1], s = s_mk , marker = mk[0], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.3')
-
-        tax.set_title("Channel Bivariate Entropy Triangle (CBET)", fontsize = fonts + 5)
+        
+        if(chart_title == ""):
+            tax.set_title("Channel Bivariate Entropy Triangle (CBET)", fontsize = fonts + 5)
+        else:
+            tax.set_title(chart_title, fontsize = fonts + 5)
+            
         tax.left_axis_label(r"$ VI_{P_{XY}}$", fontsize=fonts)
         tax.right_axis_label(r"$ MI_{P_{XY}}  $", fontsize=fonts)
         tax.bottom_axis_label(r"$\Delta H_{P_{X}\cdot{P_{Y}}}$", fontsize=fonts)
@@ -256,7 +260,7 @@ def cbetplot(edf, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size
     
     
     
-def cmetplot(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17):
+def cmetplot(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17, chart_title = ""):
 
     if(not isinstance(edf, list)):
         exit('This function only works with LISTS of Dataframes, maybe you can try the etplot function for an individual DataFrame plot')
@@ -285,7 +289,59 @@ def cmetplot(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 2
             for j in range(len(edf[i].index)):
                 tax.scatter(points[j:j+1], s = s_mk , marker = mk[j], color = colors(j), label = names[j] ,edgecolor='black', linewidth='0.3')
 
-        tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 5)
+        if(chart_title == ""):
+            tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 5)
+        else:
+            tax.set_title(chart_title, fontsize = fonts + 5)
+            
+        tax.left_axis_label(r"$ VI'_{P_\overline{XY}}$", fontsize=fonts)
+        tax.right_axis_label(r"$ 2\cdot{I'_{P_\overline{XY}}}  $", fontsize=fonts)
+        tax.bottom_axis_label(r"$\Delta H'_{P_\overline{XY}}$", fontsize=fonts)
+
+    else: 
+        
+        exit("Entropic coordinates needed for the diagram plotting")
+
+    tax.ticks(axis='lbr', linewidth=1, multiple = gridl , fontsize = ticks_size )
+    tax.clear_matplotlib_ticks()
+    tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
+    
+    tax.show()
+    
+    
+def cmetplot1(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gridl = 20 , ticks_size = 15 , pltscale = 17, chart_title = ""):
+
+    if(not isinstance(edf, list)):
+        exit('This function only works with LISTS of Dataframes, maybe you can try the etplot function for an individual DataFrame plot')
+    
+    if(not all(isinstance(edf[x],pd.DataFrame) for x in range(len(edf)))):
+        exit('All values must be instances of DataFrames for entropy calculations')
+        
+    if(not names):
+        warning('No names founded, Providing Dummy names')
+        names = list(map(lambda x: "Knn"+str(len(edf)-x)+"PC", range(len(edf))))
+             
+    
+    if(all(hasCmetEntropicCoords(edf[l]) for l in range(len(edf)))):
+
+        figure, tax = ternary_axes_subplot.figure(scale=scale)
+        figure.set_size_inches(pltscale, pltscale)
+        tax.boundary(linewidth=2.0)
+        tax.gridlines(multiple = gridl, color="blue")
+        
+        names
+        colors = get_cmap(len(edf))
+        for i in range(len(edf)):
+            points = entcoords(edf[i], scale)
+            mk = markers(1)*len(edf[i].index) ; name = str('k neighbors = '+str(names[i]))
+            for j in range(len(edf[i].index)):
+                tax.scatter(points[j:j+1], s = s_mk , marker = mk[j], color = colors(i), label = name ,edgecolor='black', linewidth='0.3')
+
+        if(chart_title == ""):
+            tax.set_title("Aggregate Channel Multivariate entropies (CMET)", fontsize = fonts + 5)
+        else:
+            tax.set_title(chart_title, fontsize = fonts + 5)
+            
         tax.left_axis_label(r"$ VI'_{P_\overline{XY}}$", fontsize=fonts)
         tax.right_axis_label(r"$ 2\cdot{I'_{P_\overline{XY}}}  $", fontsize=fonts)
         tax.bottom_axis_label(r"$\Delta H'_{P_\overline{XY}}$", fontsize=fonts)
