@@ -1,25 +1,29 @@
 from setuptools import setup
 
 
-with open('README.txt') as file:
-    long_description = file.read()
-
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
 ]
+
+with open('README.txt') as file:
+    long_description = file.read()
+    
+with open('requirements.txt') as reqs:
+	install_requires = reqs.read().splitlines()
+
+
 
 setup(
     name="entropy-triangle",
-    version="1.0.2",
-    packages=['ternary'],
-    install_requires=["matplotlib>=1.4"],
+    version="0.0.1",
+    python_requires='>=3',
+    install_requires = install_requires,
     author="Jaime de los Ríos Mouvet",
     author_email="jaime.delosriosmouvet@gmail.com",
     classifiers=classifiers,
@@ -30,3 +34,4 @@ setup(
     url="https://github.com/Jaimedlrm/entropytriangle",
     download_url="https://github.com/Jaimedlrm/entropytriangle.git",
 )
+

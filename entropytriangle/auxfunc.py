@@ -11,11 +11,12 @@ import operator
 from sys import exit as exit
 from warnings import warn as warning
 from scipy.stats import entropy as entropy
-from itertools import product
-from random import choice 
+
+from s import choice 
 from sklearn.preprocessing import LabelEncoder   #' Used for discretization
 from functools import reduce
 
+#from itertools import product
 
 def discretization (df , nbins = 1):
 
@@ -58,16 +59,9 @@ def df2matrix(df, nb = 1):
 
     return matrix 
 
+def sjoin(df,lis,sep=''):
 
-
-def expand_grid(data_dict):
-
-    rows = product(*data_dict.values())
-    return pd.DataFrame.from_records(rows, columns=data_dict.keys())
-
-## d = {c: sorted(list(df[c].unique())) for c in df.columns} 
-
-
+    return reduce(lambda x, y: x.astype(str).str.cat(y.astype(str), sep=sep),[df[col] for col in lis])
 
 def ent(data , base = 2):
     
@@ -84,10 +78,6 @@ def ent(data , base = 2):
     
     return entr
 
-
-def sjoin(df,lis,sep=''):
-
-    return reduce(lambda x, y: x.astype(str).str.cat(y.astype(str), sep=sep),[df[col] for col in lis])
 
 
 def condentropy(X,Y = None, base = 2):
@@ -173,5 +163,16 @@ def condentropy_df(X,Y,base = 2):
     for i in range(len(X.columns)): 
         cond.append(ejoint - ent(sjoin(joint, lis = ncol[ncol != ncol[i]])))
     return cond
+
+'''
+
+
+'''
+def expand_grid(data_dict):
+
+    rows = product(*data_dict.values())
+    return pd.DataFrame.from_records(rows, columns=data_dict.keys())
+
+## d = {c: sorted(list(df[c].unique())) for c in df.columns} 
 
 '''

@@ -11,6 +11,38 @@ from .ternary import ternary_axes_subplot
 from .coordsentropic import *
 
 
+def get_cmap(number):
+
+    """
+    Used for generating a set of random colors in order to differenciate the coordinates of each variable in the diagram. 
+    A series of color maps can be applied (It will be randomly selected)
+
+    > colors_markers = get_cmap(len(df.index))
+
+    Parameters
+    ----------
+    number : Number of colours (1 per variable)
+
+    Returns
+    ----------
+    colors : Returns a set of colors for creating the scatter plot (matplotlib.colors.LinearSegmentedColormap)
+
+    """
+    #cmaps = list(['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds','YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu','GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn'])
+    cmaps = list(['spring','summer','autumn','winter','cool','Wistia'])
+    return plt.cm.get_cmap(choice(cmaps) , number)
+
+
+
+def markers(n) :
+    
+    #filled_markers = ('o', '+', '*', 'x','^', '<', '>', '8', 's', 'p', 'h') ; mk = list()
+    filled_markers = ('o') ; mk = list()
+    for i in range(n) : mk.append(choice(filled_markers))
+    return mk
+
+def varnames (li):
+    return dict((name,eval(name)) for name in li )
 
 
 
