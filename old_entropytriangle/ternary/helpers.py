@@ -73,28 +73,6 @@ def simplex_iterator(scale, boundary=True):
 
 ## Ternary Projections ##
 
-## Ternary Projections ##
-
-def rotate_point(p, angle=None):
-    
-        
-    """
-    Rotate the point p "angle" degrees, multiplying the point by the rotation matrix
-
-    p = [x,y]
-
-    rotation matrix
-    | cos(angle) , -sin(angle) |
-    | sin(angle) ,  cos(angle) |
-
-    """
-    if(isinstance(angle, type(None))):
-        return p
-
-    rotation_matrix = [[numpy.cos(numpy.deg2rad(angle)) , -numpy.sin(numpy.deg2rad(angle))] , [numpy.sin(numpy.deg2rad(angle)) , numpy.cos(numpy.deg2rad(angle))]]
-    rotated_point = numpy.dot(rotation_matrix,p)
-    return rotated_point
-
 def permute_point(p, permutation=None):
     """
     Permutes the point according to the permutation keyword argument. The
@@ -106,7 +84,7 @@ def permute_point(p, permutation=None):
     return [p[int(permutation[i])] for i in range(len(p))]
 
 
-def project_point(p, permutation=None, angle = None):
+def project_point(p, permutation=None):
     """
     Maps (x,y,z) coordinates to planar simplex.
 
@@ -122,15 +100,10 @@ def project_point(p, permutation=None, angle = None):
     b = permuted[1]
     x = a + b/2.
     y = SQRT3OVER2 * b
-    
-    point = numpy.array([x,y])
-    rotated_point = rotate_point(point, angle = angle)
-
-    return rotated_point
+    return numpy.array([x, y])
 
 
-
-def project_sequence(s, permutation=None, angle = None):
+def project_sequence(s, permutation=None):
     """
     Projects a point or sequence of points using `project_point` to lists xs, ys
     for plotting with Matplotlib.
@@ -145,7 +118,7 @@ def project_sequence(s, permutation=None, angle = None):
     xs, ys: The sequence of projected points in coordinates as two lists 
     """
 
-    xs, ys = unzip([project_point(p, permutation=permutation, angle = angle) for p in s])
+    xs, ys = unzip([project_point(p, permutation=permutation) for p in s])
     return xs, ys
 
 

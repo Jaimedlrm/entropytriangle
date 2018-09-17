@@ -10,7 +10,7 @@ from .helpers import project_point
 
 ## Lines ##
 
-def line(ax, p1, p2, permutation=None, angle = None, **kwargs):
+def line(ax, p1, p2, permutation=None, **kwargs):
     """
     Draws a line on `ax` from p1 to p2.
 
@@ -26,12 +26,12 @@ def line(ax, p1, p2, permutation=None, angle = None, **kwargs):
         Any kwargs to pass through to Matplotlib.
     """
 
-    pp1 = project_point(p1, permutation=permutation, angle = angle)
-    pp2 = project_point(p2, permutation=permutation, angle = angle)
+    pp1 = project_point(p1, permutation=permutation)
+    pp2 = project_point(p2, permutation=permutation)
     ax.add_line(Line2D((pp1[0], pp2[0]), (pp1[1], pp2[1]), **kwargs))
 
 
-def horizontal_line(ax, scale, i, angle = None, **kwargs):
+def horizontal_line(ax, scale, i, **kwargs):
     """
     Draws the i-th horizontal line parallel to the lower axis.
 
@@ -49,10 +49,10 @@ def horizontal_line(ax, scale, i, angle = None, **kwargs):
 
     p1 = (0, i, scale - i)
     p2 = (scale - i, i, 0)
-    line(ax, p1, p2, angle = angle, **kwargs)
+    line(ax, p1, p2, **kwargs)
 
 
-def left_parallel_line(ax, scale, i, angle = None,  **kwargs):
+def left_parallel_line(ax, scale, i,  **kwargs):
     """
     Draws the i-th line parallel to the left axis.
 
@@ -70,10 +70,10 @@ def left_parallel_line(ax, scale, i, angle = None,  **kwargs):
 
     p1 = (i, scale - i, 0)
     p2 = (i, 0, scale - i)
-    line(ax, p1, p2, angle = angle, **kwargs)
+    line(ax, p1, p2, **kwargs)
 
 
-def right_parallel_line(ax, scale, i, angle = None, **kwargs):
+def right_parallel_line(ax, scale, i, **kwargs):
     """
     Draws the i-th line parallel to the right axis.
 
@@ -91,12 +91,12 @@ def right_parallel_line(ax, scale, i, angle = None, **kwargs):
 
     p1 = (0, scale - i, i)
     p2 = (scale - i, 0, i)
-    line(ax, p1, p2, angle = angle, **kwargs)
+    line(ax, p1, p2, **kwargs)
 
 
 ## Boundary, Gridlines ##
 
-def boundary(ax, scale, axes_colors=None, angle = None, **kwargs):
+def boundary(ax, scale, axes_colors=None, **kwargs):
     """
     Plots the boundary of the simplex. Creates and returns matplotlib axis if
     none given.
@@ -121,9 +121,9 @@ def boundary(ax, scale, axes_colors=None, angle = None, **kwargs):
         if _axis not in axes_colors.keys():
             axes_colors[_axis] = 'black'
 
-    horizontal_line(ax, scale, 0, angle = angle, color=axes_colors['b'], **kwargs)
-    left_parallel_line(ax, scale, 0, angle = angle, color=axes_colors['l'], **kwargs)
-    right_parallel_line(ax, scale, 0, angle = angle, color=axes_colors['r'], **kwargs)
+    horizontal_line(ax, scale, 0, color=axes_colors['b'], **kwargs)
+    left_parallel_line(ax, scale, 0, color=axes_colors['l'], **kwargs)
+    right_parallel_line(ax, scale, 0, color=axes_colors['r'], **kwargs)
     return ax
 
 
@@ -148,7 +148,7 @@ def merge_dicts(base, updates):
 
 
 def gridlines(ax, scale, multiple=None, horizontal_kwargs=None,
-              left_kwargs=None, right_kwargs=None, angle= None, **kwargs):
+              left_kwargs=None, right_kwargs=None, **kwargs):
     """
     Plots grid lines excluding boundary.
 
@@ -184,11 +184,11 @@ def gridlines(ax, scale, multiple=None, horizontal_kwargs=None,
     ## Draw grid-lines
     # Parallel to horizontal axis
     for i in arange(0, scale, multiple):
-        horizontal_line(ax, scale, i, angle = angle, **horizontal_kwargs)
+        horizontal_line(ax, scale, i, **horizontal_kwargs)
     # Parallel to left and right axes
     for i in arange(0, scale + multiple, multiple):
-        left_parallel_line(ax, scale, i, angle = angle, **left_kwargs)
-        right_parallel_line(ax, scale, i, angle = angle, **right_kwargs)
+        left_parallel_line(ax, scale, i, **left_kwargs)
+        right_parallel_line(ax, scale, i, **right_kwargs)
     return ax
 
 
@@ -207,7 +207,7 @@ def normalize_tick_formats(tick_formats):
 
 def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
           offset=0.01, clockwise=False, axes_colors=None, fontsize=10,
-          tick_formats=None, angle = None,  **kwargs):
+          tick_formats=None, **kwargs):
     """
     Sets tick marks and labels.
 
@@ -285,8 +285,8 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (scale - i + offset, i, 0)
                 text_location = (scale - i + 2.6 * offset, i - 0.5 * offset, 0)
                 tick = ticks[index]
-            line(ax, loc1, loc2, angle = angle ,color=axes_colors['r'], **kwargs)
-            x, y = project_point(text_location, angle = angle)
+            line(ax, loc1, loc2, color=axes_colors['r'], **kwargs)
+            x, y = project_point(text_location)
             s = tick_formats['r'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['r'], fontsize=fontsize)
@@ -304,8 +304,8 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (-offset, i + offset, 0)
                 text_location = (-2 * offset, i + 1.5 * offset, 0)
                 tick = ticks[-(index+1)]
-            line(ax, loc1, loc2, angle = angle,color=axes_colors['l'], **kwargs)
-            x, y = project_point(text_location, angle = angle)
+            line(ax, loc1, loc2, color=axes_colors['l'], **kwargs)
+            x, y = project_point(text_location)
             s = tick_formats['l'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['l'], fontsize=fontsize)
@@ -323,8 +323,8 @@ def ticks(ax, scale, ticks=None, locations=None, multiple=1, axis='b',
                 loc2 = (i, -offset, 0)
                 text_location = (i + 0.5 * offset, -3.5 * offset, 0)
                 tick = ticks[index]
-            line(ax, loc1, loc2,angle = angle, color=axes_colors['b'], **kwargs)
-            x, y = project_point(text_location, angle = angle)
+            line(ax, loc1, loc2, color=axes_colors['b'], **kwargs)
+            x, y = project_point(text_location)
             s = tick_formats['b'] % tick
             ax.text(x, y, s, horizontalalignment="center",
                     color=axes_colors['b'], fontsize=fontsize)

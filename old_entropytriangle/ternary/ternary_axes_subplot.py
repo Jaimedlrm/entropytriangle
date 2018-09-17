@@ -13,7 +13,7 @@ from . import plotting
 from .helpers import project_point, convert_coordinates_sequence
 
 
-def figure(ax=None, scale=None, permutation=None, angle = None):
+def figure(ax=None, scale=None, permutation=None):
     """
     Wraps a Matplotlib AxesSubplot or generates a new one. Emulates matplotlib's
     > figure, ax = pyplot.subplots()
@@ -25,7 +25,8 @@ def figure(ax=None, scale=None, permutation=None, angle = None):
     scale: float, None
         The scale factor of the ternary plot
     """
-    ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale, permutation=permutation, angle=angle)
+
+    ternary_ax = TernaryAxesSubplot(ax=ax, scale=scale, permutation=permutation)
     return ternary_ax.get_figure(), ternary_ax
 
 
@@ -52,24 +53,16 @@ class TernaryAxesSubplot(object):
     to ease the use of ternary plotting functions.
     """
 
-    def __init__(self, ax=None, scale=None, permutation=None , angle=None):
-        
+    def __init__(self, ax=None, scale=None, permutation=None):
         if not scale:
             scale = 1.0
-
-        if not angle:
-            angle = 0.0
-
         if ax:
             self.ax = ax
         else:
             _, self.ax = pyplot.subplots()
-
         self.set_scale(scale=scale)
-        self.set_angle(angle = angle)
         self._permutation = permutation
         self._boundary_scale = scale
-        self._boundary_angle = angle
         # Container for the axis labels supplied by the user
         self._labels = dict()
         self._corner_labels = dict()
@@ -104,13 +97,6 @@ class TernaryAxesSubplot(object):
 
     def get_scale(self):
         return self._scale
-
-    def set_angle(self, angle=None):
-        self._angle = angle
-
-    def get_angle(self):
-        return self._angle
-
 
     def set_axis_limits(self, axis_limits=None):
         """
@@ -151,20 +137,13 @@ class TernaryAxesSubplot(object):
         kwargs:
             Any kwargs to pass through to matplotlib.
         """
-        angle = self.get_angle()
 
         if not position:
             position = (-offset, 3./5, 2./5)
-        
-        if (angle != 0):
-            rotation = -60
-            position = (-.45*offset, 2.5/5,0)
-
         self._labels["left"] = (label, position, rotation, kwargs)
 
     def right_axis_label(self, label, position=None, rotation=-60, offset=0.08,
                          **kwargs):
-
 
         """
         Sets the label on the right axis.
@@ -182,15 +161,9 @@ class TernaryAxesSubplot(object):
         kwargs:
             Any kwargs to pass through to matplotlib.
         """
-        angle = self.get_angle()
-        
+
         if not position:
             position = (2. / 5 + offset, 3. / 5, 0)
-            
-        if (angle != 0):
-            rotation = 60
-            position =  (2./5 + 1.53*offset,  2.5/ 5 ,0)   
-        
         self._labels["right"] = (label, position, rotation, kwargs)
 
     def bottom_axis_label(self, label, position=None, rotation=0, offset=0.02,
@@ -211,15 +184,9 @@ class TernaryAxesSubplot(object):
         kwargs:
             Any kwargs to pass through to matplotlib.
         """
-        angle = self.get_angle()
-        
+
         if not position:
             position = (0.5-1.3*offset, 2* offset, 0.5)
-
-        if (angle != 0):
-            offset=0.08
-            position =  (0.005, 0.843 + 2.15 * offset, 0)
-
         self._corner_labels["bottom"] = (label, position, rotation, kwargs)
 
     def right_corner_label(self, label, position=None, rotation=0, offset=0.08,
@@ -298,50 +265,43 @@ class TernaryAxesSubplot(object):
 
     # Boundary and Gridlines
 
-    def boundary(self, scale=None, axes_colors=None, angle = None, **kwargs):
+    def boundary(self, scale=None, axes_colors=None, **kwargs):
         # Sometimes you want to draw a bigger boundary
         if not scale:
             scale = self._boundary_scale  # defaults to self._scale
-        if not angle:
-            angle = self._boundary_angle
         ax = self.get_axes()
-        self.resize_drawing_canvas(scale,angle)
-        lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors,angle = angle, **kwargs)
+        self.resize_drawing_canvas(scale)
+        lines.boundary(scale=scale, ax=ax, axes_colors=axes_colors, **kwargs)
 
     def gridlines(self, multiple=None, horizontal_kwargs=None, left_kwargs=None,
                   right_kwargs=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        angle = self.get_angle()
         lines.gridlines(scale=scale, multiple=multiple,
                         ax=ax, horizontal_kwargs=horizontal_kwargs,
-                        left_kwargs=left_kwargs, right_kwargs=right_kwargs, angle = angle, 
+                        left_kwargs=left_kwargs, right_kwargs=right_kwargs,
                         **kwargs)
 
     # Various Lines
 
     def line(self, p1, p2, **kwargs):
         ax = self.get_axes()
-        angle = self.get_angle()
-        lines.line(ax, p1, p2, angle, **kwargs)
+        lines.line(ax, p1, p2, **kwargs)
 
     def horizontal_line(self, i, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        angle = self.get_angle()
-        lines.horizontal_line(ax, scale, i, angle, **kwargs)
+        lines.horizontal_line(ax, scale, i, **kwargs)
 
     def left_parallel_line(self, i, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        angle = self.get_angle()
-        lines.left_parallel_line(ax, scale, i, angle, **kwargs)
+        lines.left_parallel_line(ax, scale, i, **kwargs)
 
     def right_parallel_line(self, i, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        angle = self.get_angle()
-        lines.right_parallel_line(ax, scale, i, angle, **kwargs)
+        lines.right_parallel_line(ax, scale, i, **kwargs)
 
     # Matplotlib passthroughs
 
@@ -398,19 +358,18 @@ class TernaryAxesSubplot(object):
               clockwise=False, axes_colors=None, tick_formats=None, **kwargs):
         ax = self.get_axes()
         scale = self.get_scale()
-        angle = self.get_angle()
         lines.ticks(ax, scale, ticks=ticks, locations=locations,
                     multiple=multiple, clockwise=clockwise, axis=axis,
-                    axes_colors=axes_colors, tick_formats=tick_formats, angle = angle,
+                    axes_colors=axes_colors, tick_formats=tick_formats,
                     **kwargs)
 
     # Redrawing and resizing
 
-    def resize_drawing_canvas(self, scale=None, angle = None):
+    def resize_drawing_canvas(self, scale=None):
         ax = self.get_axes()
         if not scale:
             scale = self.get_scale()
-        plotting.resize_drawing_canvas(ax, scale=scale, angle = angle)
+        plotting.resize_drawing_canvas(ax, scale=scale)
 
     def _redraw_labels(self):
         """Redraw axis labels, typically after draw or resize events."""
@@ -447,25 +406,22 @@ class TernaryAxesSubplot(object):
 
     def scatter(self, points, **kwargs):
         ax = self.get_axes()
-        angle = self.get_angle()
         permutation = self._permutation
-        plot_ = plotting.scatter(points, ax=ax, permutation=permutation, angle = angle,
+        plot_ = plotting.scatter(points, ax=ax, permutation=permutation,
                                  **kwargs)
         return plot_
 
     def plot(self, points, **kwargs):
         ax = self.get_axes()
-        angle = self.get_angle()
         permutation = self._permutation
-        plotting.plot(points, ax=ax, permutation=permutation, angle = angle,
+        plotting.plot(points, ax=ax, permutation=permutation,
                       **kwargs)
 
     def plot_colored_trajectory(self, points, cmap=None, **kwargs):
         ax = self.get_axes()
-        angle = self.get_angle()
         permutation = self._permutation
         plotting.plot_colored_trajectory(points, cmap=cmap, ax=ax,
-                                         permutation=permutation, angle=angle, **kwargs)
+                                         permutation=permutation, **kwargs)
 
     def heatmap(self, data, scale=None, cmap=None, scientific=False,
                 style='triangular', colorbar=True, use_rgba=False,

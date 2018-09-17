@@ -11,12 +11,9 @@ import operator
 from sys import exit as exit
 from warnings import warn as warning
 from scipy.stats import entropy as entropy
-
-from s import choice 
 from sklearn.preprocessing import LabelEncoder   #' Used for discretization
 from functools import reduce
 
-#from itertools import product
 
 def discretization (df , nbins = 1):
 
@@ -46,22 +43,10 @@ def discretization (df , nbins = 1):
     return disc
 
 
-def df2matrix(df, nb = 1):
-
-    df = discretization(df,nb)
-    li = list() ; dims = list() 
-
-    df.apply((lambda x : dims.append(len(pd.unique(x)))))
-    for i in range(len(df.columns)):li.append(pd.Series(df[df.columns[i]]))
-
-    m = pd.crosstab(index = li[0:len(li)-1], columns = li[len(li)-1], dropna= False)
-    matrix = m.as_matrix().reshape(dims)
-
-    return matrix 
-
 def sjoin(df,lis,sep=''):
 
     return reduce(lambda x, y: x.astype(str).str.cat(y.astype(str), sep=sep),[df[col] for col in lis])
+
 
 def ent(data , base = 2):
     
@@ -100,79 +85,3 @@ def condentropy(X,Y = None, base = 2):
         
     return Hres
 
-
-'''
-
-Cambios Hoy 11Sep
-
-def condentropy_joint(X,Y,base = 2):
-    
-    joint = pd.merge(X, Y, left_index = True, right_index = True)
-    cond = ent(sjoin(joint,lis = joint.columns),base = base) - ent(sjoin(Y,lis = Y.columns),base = base)
-    
-    return cond
-
-def condentropy(df, base = 2):
-
-
-    cond = list() ; ncol = df.columns
-    total = ent(sjoin(df,lis = ncol),base = base)
-    for i in range(len(df.columns)): 
-        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]]),base = base))
-
-    return cond 
-
-
-def condentropy(df, base = 2):
-
-
-    cond = list() ; ncol = df.columns
-    total = ent(sjoin(df,lis = ncol),base = base)
-    for i in range(len(df.columns)): 
-        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]]),base = base))
-
-    return cond 
-
-Cambios Hoy 11Sep
-
-
-def condentropy(df, base = 2):
-
-
-    cond = list() ; ncol = df.columns
-    #total = ent(sjoin(df,lis = ncol),base = base)
-    for i in range(len(df.columns)): 
-        new = pd.merge(df[ncol[ncol != ncol[i]]],pd.DataFrame(df[ncol[i]]),left_index=True , right_index= True)
-        total = ent(sjoin(new, lis = new.columns),base =2)
-        cond.append(total - ent(sjoin(df, lis = ncol[ncol != ncol[i]]),base = base))
-
-    return cond 
-
-'''
-
-
-#Deprecated
-
-'''
-
-def condentropy_df(X,Y,base = 2):
-
-    cond = list(); 
-    joint = pd.merge(X, Y, left_index = True, right_index = True) ; ncol = joint.columns
-    ejoint = ent(sjoin(joint,lis = joint.columns),base = base)
-    for i in range(len(X.columns)): 
-        cond.append(ejoint - ent(sjoin(joint, lis = ncol[ncol != ncol[i]])))
-    return cond
-
-'''
-
-
-'''
-def expand_grid(data_dict):
-
-    rows = product(*data_dict.values())
-    return pd.DataFrame.from_records(rows, columns=data_dict.keys())
-
-## d = {c: sorted(list(df[c].unique())) for c in df.columns} 
-
-'''

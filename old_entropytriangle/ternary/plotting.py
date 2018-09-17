@@ -12,7 +12,7 @@ from .colormapping import get_cmap, colorbar_hack
 
 ### Drawing Helpers ###
 
-def resize_drawing_canvas(ax, scale=1., angle = 0.):
+def resize_drawing_canvas(ax, scale=1.):
     """
     Makes sure the drawing surface is large enough to display projected
     content.
@@ -23,15 +23,10 @@ def resize_drawing_canvas(ax, scale=1., angle = 0.):
         The subplot to draw on.
     scale: float, 1.0
         Simplex scale size.
-    """ 
-    
-    if(angle == 0):
-        ax.set_ylim((-0.10 * scale, .90 * scale))
-        ax.set_xlim((-0.05 * scale, 1.05 * scale))
-        
-    else:
-        ax.set_ylim((-0.95 * scale, .20 * scale))
-        ax.set_xlim((-0.1 * scale, 1.1 * scale))
+    """
+    ax.set_ylim((-0.10 * scale, .90 * scale))
+    ax.set_xlim((-0.05 * scale, 1.05 * scale))
+
 
 def clear_matplotlib_ticks(ax=None, axis="both"):
     """
@@ -55,7 +50,7 @@ def clear_matplotlib_ticks(ax=None, axis="both"):
 
 ## Curve Plotting ##
 
-def plot(points, ax=None, permutation=None, angle = None, **kwargs):
+def plot(points, ax=None, permutation=None, **kwargs):
     """
     Analogous to maplotlib.plot. Plots trajectory points where each point is a
     tuple (x,y,z) satisfying x + y + z = scale (not checked). The tuples are
@@ -72,12 +67,12 @@ def plot(points, ax=None, permutation=None, angle = None, **kwargs):
     """
     if not ax:
         fig, ax = pyplot.subplots()
-    xs, ys = project_sequence(points, permutation=permutation, angle = angle)
+    xs, ys = project_sequence(points, permutation=permutation)
     ax.plot(xs, ys, **kwargs)
     return ax
 
 
-def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None, angle = None,
+def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None,
                             **kwargs):
     """
     Plots trajectories with changing color, simlar to `plot`. Trajectory points
@@ -98,7 +93,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None, angle 
     if not ax:
         fig, ax = pyplot.subplots()
     cmap = get_cmap(cmap)
-    xs, ys = project_sequence(points, permutation=permutation, angle = angle)
+    xs, ys = project_sequence(points, permutation=permutation)
 
     # We want to color each segment independently...which is annoying.
     segments = []
@@ -123,7 +118,7 @@ def plot_colored_trajectory(points, cmap=None, ax=None, permutation=None, angle 
 
 def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
             vmin=0, vmax=1, scientific=False, cbarlabel=None, cb_kwargs=None,
-            angle = None, **kwargs):
+            **kwargs):
     """
     Plots trajectory points where each point satisfies x + y + z = scale.
     First argument is a list or numpy array of tuples of length 3.
@@ -149,7 +144,7 @@ def scatter(points, ax=None, permutation=None, colorbar=False, colormap=None,
     """
     if not ax:
         fig, ax = pyplot.subplots()
-    xs, ys = project_sequence(points, permutation=permutation, angle = angle)
+    xs, ys = project_sequence(points, permutation=permutation)
     ax.scatter(xs, ys, vmin=vmin, vmax=vmax, **kwargs)
 
     if colorbar and (colormap != None):
