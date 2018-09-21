@@ -180,7 +180,7 @@ def entriangle (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200
 
     tax.ticks(axis='lbr', linewidth=1, multiple = gridl , fontsize = ticks_size )
     tax.clear_matplotlib_ticks()
-    tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
+    tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 10)
     
     tax.show()
     figure.savefig('plot.pdf')
@@ -300,7 +300,7 @@ def entriangle_list(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gr
     
     if(all(hasCmetEntropicCoords(edf[l]) for l in range(len(edf)))):
         
-        tax.legend(handles=leg, loc = 1 ,labelspacing = 1 , fontsize = 14)
+        tax.legend(handles=leg, loc = 1 ,labelspacing = 1 , fontsize = 10)
     else:
         tax.legend(title = 'Features' ,labelspacing = 1.5 , fontsize = 12)
     
