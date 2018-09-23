@@ -193,14 +193,15 @@ def entriangle_list(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gr
     
     """
     Function for creating and plotting points of the entropy triangle, independentlly of the type of triangle (CBET, SMET or CMET)
+    This function just work with LISTS of dataframes
 
-    > entropytriangle(edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 
+    > entropytriangle_list(edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200 
                      ,gridl = 20 , ticks_size = 15 , pltscale = 20, 
                      chart_title = ""):
 
     Parameters
     ----------
-    edf : Dataframe with the entropic measures calculated
+    edf : list of entropy dataframes 
     names : Used for plotting a list of Daframes (Defalut = NONE) 
             In case of list: Names of the dataframes (if empty, some names will be provided for the plotting)
     scale : Scale for the entropy triangle
@@ -224,12 +225,6 @@ def entriangle_list(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gr
     
     if(not all(isinstance(edf[x],pd.DataFrame) for x in range(len(edf)))):
         exit('All values must be instances of DataFrames for entropy calculations')
-    
-    '''   
-    if(not names):
-        warning('No names founded, Providing Dummy names')
-        names = list(map(lambda x: "Knn"+str(len(edf)-x)+"PC", range(len(edf))))
-    '''
     
     if(all(hasCbetEntropicCoords(edf[l]) for l in range(len(edf)))):
         
