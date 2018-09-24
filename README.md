@@ -7,15 +7,15 @@ Representation of the entropy triangles
 
 ### Pip
 
-[![PyPI](https://pypi.org/project/entropytriangle/)](https://pypi.org/project/entropytriangle/)
+The package is stored in [PyPI](https://pypi.org/project/entropytriangle/)
 
-Using You can install the current release (0.1.1) with pip:
+Using pip you can install the current release (0.1.1) using the command:
 
 ```bash
     pip intstall entropytriangle
 ```
 
-Note that with pip you may need to use sudo
+Note that with pip you may need to use sudo. 
 
 ```bash
     sudo pip intstall entropytriangle
@@ -23,13 +23,13 @@ Note that with pip you may need to use sudo
 
 ### Anaconda
 
-You can install entropytriangle with conda:
+The package is stored in [Anaconda Cloud](https://anaconda.org/jaimedlrm/entropytriangle)
+
+You can install entropytriangle with the conda command:
 
 ```bash
 conda install -c jaimedlrm entropytriangle
 ```
-
-In [![Anaconda Cloud](https://anaconda.org/jaimedlrm/entropytriangle)](https://anaconda.org/jaimedlrm/entropytriangle)for more information.
 
 
 ### With setup.py
