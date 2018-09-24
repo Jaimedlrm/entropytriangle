@@ -1,5 +1,6 @@
 # Entropy Triangle Package
 [![Anaconda-Server Badge](https://anaconda.org/jaimedlrm/entropytriangle/badges/installer/conda.svg)](https://conda.anaconda.org/jaimedlrm)
+[![PyPI version](https://badge.fury.io/py/entropytriangle.svg)](https://badge.fury.io/py/entropytriangle)
 
 A Python package to work with entropic coordinates and the entropy triangles defined by Valverde-Albacete and Peláez Moreno in: 
 
