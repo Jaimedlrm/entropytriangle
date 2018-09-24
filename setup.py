@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup,find_packages
 
 
 classifiers = [
@@ -18,16 +18,16 @@ with open('requirements.txt') as reqs:
 	install_requires = reqs.read().splitlines()
 
 
-
 setup(
     name="entropytriangle",
     version="0.0.1",
+    packages= packages=find_packages(),
     python_requires='>=3',
     install_requires = install_requires,
     author="Jaime de los Ríos Mouvet",
     author_email="jaime.delosriosmouvet@gmail.com",
     classifiers=classifiers,
-    description="Calculation of the entropy trinagles",
+    description="Calculation of the entropy triangles",
     long_description=long_description,
     keywords="Entropy Triangle Information Theory",
     license="MIT",
