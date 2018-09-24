@@ -23,13 +23,13 @@ The package is stored in [PyPI](https://pypi.org/project/entropytriangle/)
 Using pip you can install the current release (0.1.1) using the command:
 
 ```bash
-    pip intstall entropytriangle
+pip intstall entropytriangle
 ```
 
 Note that with pip you may need to use sudo. 
 
 ```bash
-    sudo pip intstall entropytriangle
+sudo pip intstall entropytriangle
 ```
 
 ### Anaconda
