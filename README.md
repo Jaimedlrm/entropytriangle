@@ -1,6 +1,16 @@
-#Entropy Triangle Package
+# Entropy Triangle Package
+[![Anaconda-Server Badge](https://anaconda.org/jaimedlrm/entropytriangle/badges/installer/conda.svg)](https://conda.anaconda.org/jaimedlrm)
 
-Representation of the entropy triangles
+A Python package to work with entropic coordinates and the entropy triangles defined by Valverde-Albacete and Peláez Moreno in: 
+
+- [100% Classification Accuracy Considered Harmful: The Normalized Information Transfer Factor Explains the Accuracy Paradox](https://www.researchgate.net/publication/259743406_100_Classification_Accuracy_Considered_Harmful_The_Normalized_Information_Transfer_Factor_Explains_the_Accuracy_Paradox)
+
+- [The Evaluation of Data Sources using Multivariate Entropy Tools](https://www.researchgate.net/publication/313460913_The_Evaluation_of_Data_Sources_using_Multivariate_Entropy_Tools)
+
+- [Assessing Information Transmission in Data Transformations with the Channel Multivariate Entropy Triangle](https://www.researchgate.net/publication/326023467_Assessing_Information_Transmission_in_Data_Transformations_with_the_Channel_Multivariate_Entropy_Triangle)
+
+The packages uses NumPy, Pandas, SciPy, Scikit-learn and Matplotlib
+
 
 # Package Installation
 
@@ -28,9 +38,14 @@ The package is stored in [Anaconda Cloud](https://anaconda.org/jaimedlrm/entropy
 You can install entropytriangle with the conda command:
 
 ```bash
+conda config --add channels Jaimedlrm
+conda install entropytriangle
+```
+or :
+
+```bash
 conda install -c jaimedlrm entropytriangle
 ```
-
 
 ### With setup.py
 
