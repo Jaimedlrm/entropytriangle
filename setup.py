@@ -20,8 +20,8 @@ with open('requirements.txt') as reqs:
 
 setup(
     name="entropytriangle",
-    version="0.0.1",
-    packages= packages=find_packages(),
+    version="0.1.2",
+    packages=find_packages(),
     python_requires='>=3',
     install_requires = install_requires,
     author="Jaime de los Ríos Mouvet",
