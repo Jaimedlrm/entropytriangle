@@ -53,15 +53,15 @@ conda install -c jaimedlrm entropytriangle
 Alternatively you can clone the repository and run `setup.py` in the usual manner:
 
 ```bash
-    git clone https://github.com/Jaimedlrm/entropytriangle.git
-    cd entropytriangle
-    python setup.py install
+git clone https://github.com/Jaimedlrm/entropytriangle.git
+cd entropytriangle
+python setup.py install
 ```
 
 Note that you may need
 
 ```bash
-    sudo python setup.py install
+sudo python setup.py install
 ```
 
 # Usage and Examples
