@@ -2,7 +2,7 @@
 [![Anaconda-Server Badge](https://anaconda.org/jaimedlrm/entropytriangle/badges/version.svg)](https://anaconda.org/jaimedlrm/entropytriangle)
 [![PyPI version](https://badge.fury.io/py/entropytriangle.svg)](https://badge.fury.io/py/entropytriangle)
 
-A Python package to work with entropic coordinates and the entropy triangles defined by Valverde-Albacete and Peláez Moreno in: 
+A Python package to work with entropic coordinates and the entropy triangles defined in: 
 
 - [100% Classification Accuracy Considered Harmful: The Normalized Information Transfer Factor Explains the Accuracy Paradox](https://www.researchgate.net/publication/259743406_100_Classification_Accuracy_Considered_Harmful_The_Normalized_Information_Transfer_Factor_Explains_the_Accuracy_Paradox)
 
