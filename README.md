@@ -4,11 +4,11 @@
 
 A Python package to work with entropic coordinates and the entropy triangles defined in: 
 
-- [100% Classification Accuracy Considered Harmful: The Normalized Information Transfer Factor Explains the Accuracy Paradox](https://www.researchgate.net/publication/259743406_100_Classification_Accuracy_Considered_Harmful_The_Normalized_Information_Transfer_Factor_Explains_the_Accuracy_Paradox)
+- [100% Classification Accuracy Considered Harmful: The Normalized Information Transfer Factor Explains the Accuracy Paradox](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0084217)
 
-- [The Evaluation of Data Sources using Multivariate Entropy Tools](https://www.researchgate.net/publication/313460913_The_Evaluation_of_Data_Sources_using_Multivariate_Entropy_Tools)
+- [The Evaluation of Data Sources using Multivariate Entropy Tools](https://www.sciencedirect.com/science/article/pii/S0957417417300805)
 
-- [Assessing Information Transmission in Data Transformations with the Channel Multivariate Entropy Triangle](https://www.researchgate.net/publication/326023467_Assessing_Information_Transmission_in_Data_Transformations_with_the_Channel_Multivariate_Entropy_Triangle)
+- [Assessing Information Transmission in Data Transformations with the Channel Multivariate Entropy Triangle](https://www.mdpi.com/1099-4300/20/7/498)
 
 The packages uses NumPy, Pandas, SciPy, Scikit-learn and Matplotlib
 
