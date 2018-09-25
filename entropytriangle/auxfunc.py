@@ -17,6 +17,22 @@ from functools import reduce
 
 def discretization (df , nbins = 1):
 
+    """
+    Function created for the discretization of a dataframe in #nbins equalwidth bins
+
+    > comprobation = discretization(df,nbins)
+
+    Parameters
+    ----------
+    df : raw DataFrame 
+    nbins : number of bins 
+
+    Returns
+    ----------
+    df : Discretized Dataframe
+
+    """
+
 
     if(not isinstance(df,pd.DataFrame)):
         exit("Can only work with Data Frames!")
@@ -45,15 +61,40 @@ def discretization (df , nbins = 1):
 
 def sjoin(df,lis,sep=''):
 
+    """
+    Function created for merge all the colums of a DataFrame in one column
+
+    > odf = sjoin(df,df.columns,'')
+
+    Parameters
+    ----------
+    df : Raw DataFrame 
+    lis: Columns to merge
+    sep : Separator
+    Returns
+    ----------
+    odf : Merged DataFrame
+
+    """
+
     return reduce(lambda x, y: x.astype(str).str.cat(y.astype(str), sep=sep),[df[col] for col in lis])
 
 
 def ent(data , base = 2):
     
-    '''
-    Entropy Calculation for Series.
-    
-    '''
+    """
+    Function created for calculating the entropy of a pandas Series
+
+    > entropy = ent(df,base = 2)
+
+    Parameters
+    ----------
+    df : Raw DataFrame 
+    base : Logarithm base used for the entropy calculation (Default value equal 2)
+    ----------
+    entropy : Value (float)
+
+    """
    
     if(isinstance(data, pd.DataFrame)):
         data = sjoin(data,lis = data.columns)
@@ -66,6 +107,25 @@ def ent(data , base = 2):
 
 
 def condentropy(X,Y = None, base = 2):
+
+    """
+    Function created for calculating the conditional entropy of two dataframes
+    Formula used from the R function condentropy
+    https://rdrr.io/cran/infotheo/man/condentropy.html
+    
+    H(X|Y) = H(Y,X)-H(Y)
+    
+    > entropy_value = condentropy(X,Y,base)
+
+    Parameters
+    ----------
+    X : DataFrame 
+    Y : DataFrame
+    base : Logarithm base used for the entropy calculation (Default value equal 2)
+    ----------
+    entropy_value : Value (float)
+
+    """
     
     if(isinstance(Y, type(None))):
         Hres = ent(X,base = base)

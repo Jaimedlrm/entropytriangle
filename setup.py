@@ -1,5 +1,5 @@
-from setuptools import setup,find_packages
-
+from distutils.core import setup
+from setuptools import find_packages
 
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -17,14 +17,14 @@ with open('README.txt') as file:
 with open('requirements.txt') as reqs:
 	install_requires = reqs.read().splitlines()
 
-
+print(find_packages())
 setup(
     name="entropytriangle",
-    version="0.1.1",
-    packages=find_packages(),
+    version="0.2.1",
+    packages= find_packages(),
     python_requires='>=3',
     install_requires = install_requires,
-    author="Jaime de los Ríos Mouvet",
+    author="Jaime de los Rios Mouvet",
     author_email="jaime.delosriosmouvet@gmail.com",
     classifiers=classifiers,
     description="Calculation of the entropy triangles",
