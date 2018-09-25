@@ -1,6 +1,6 @@
 # Entropy Triangle Package
-[![Anaconda-Server Badge](https://anaconda.org/jaimedlrm/entropytriangle/badges/version.svg)](https://anaconda.org/jaimedlrm/entropytriangle)
 [![PyPI version](https://badge.fury.io/py/entropytriangle.svg)](https://badge.fury.io/py/entropytriangle)
+[![Anaconda-Server Badge](https://anaconda.org/jaimedlrm/entropytriangle/badges/version.svg)](https://anaconda.org/jaimedlrm/entropytriangle)
 
 A Python package to work with entropic coordinates and the entropy triangles defined in: 
 
@@ -32,21 +32,6 @@ Note that with pip you may need to use sudo.
 sudo pip install entropytriangle
 ```
 
-### Anaconda
-
-The package is stored in [Anaconda Cloud](https://anaconda.org/jaimedlrm/entropytriangle)
-
-You can install entropytriangle with the conda command:
-
-```bash
-conda config --add channels Jaimedlrm
-conda install entropytriangle
-```
-or :
-
-```bash
-conda install -c jaimedlrm entropytriangle
-```
 
 ### With setup.py
 
@@ -63,6 +48,26 @@ Note that you may need
 ```bash
 sudo python setup.py install
 ```
+
+
+### Anaconda
+
+The package is stored in [Anaconda Cloud](https://anaconda.org/jaimedlrm/entropytriangle)
+
+It is just available at the moment for osx-64
+
+You can install entropytriangle with the conda command:
+
+```bash
+conda config --add channels Jaimedlrm
+conda install entropytriangle
+```
+or :
+
+```bash
+conda install -c jaimedlrm entropytriangle
+```
+
 
 # Usage and Examples
 
