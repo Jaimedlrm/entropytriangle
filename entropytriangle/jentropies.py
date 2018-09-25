@@ -25,7 +25,7 @@ def jentropies(X,Y , base = 2 , nbins = 1):
 
     Returns
     ----------
-    edf : Pandas DataFrame containing the values of the entropies calculated from the contingency matrix
+    edf : Pandas DataFrame containing the entropic values of input Frames
 
     """
 
@@ -83,7 +83,7 @@ def jentropies_binary(Nxy, base = 2):
 
     Returns
     ----------
-    edf : Pandas DataFrame containing the values of the entropies calculated from the contingency matrix
+    edf : Pandas DataFrame containing the entropic values of input Frames
 
     """
 
