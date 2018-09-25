@@ -1,5 +1,4 @@
-from distutils.core import setup
-from setuptools import find_packages
+from setuptools import setup,find_packages
 
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -20,7 +19,7 @@ with open('requirements.txt') as reqs:
 print(find_packages())
 setup(
     name="entropytriangle",
-    version="0.2.1",
+    version="1.0.1",
     packages= find_packages(),
     python_requires='>=3',
     install_requires = install_requires,
