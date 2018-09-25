@@ -109,9 +109,8 @@ def ent(data , base = 2):
 def condentropy(X,Y = None, base = 2):
 
     """
-    Function created for calculating the conditional entropy of two dataframes
+    Function created for calculating the conditional entropy of two dataframes https://rdrr.io/cran/infotheo/man/condentropy.html
     Formula used from the R function condentropy
-    https://rdrr.io/cran/infotheo/man/condentropy.html
     
     H(X|Y) = H(Y,X)-H(Y)
     
