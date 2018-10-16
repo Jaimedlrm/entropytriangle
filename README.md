@@ -12,6 +12,9 @@ A Python package to work with entropic coordinates and the entropy triangles def
 
 The packages uses NumPy, Pandas, SciPy, Scikit-learn and Matplotlib
 
+You may find the theoretical framework and further support in 
+
+- [Evaluation of Machine Learning Techniques by Entropic Means](https://www.researchgate.net/project/Evaluation-of-Machine-Learning-Techniques-by-Entropic-Means)
 
 # Package Installation
 
