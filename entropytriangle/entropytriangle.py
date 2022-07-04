@@ -101,7 +101,7 @@ def entriangle (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200
         mk = markers(1)*len(edf)
         
         for i in range(len(edf.index)):
-            tax.scatter(points[i:i+1], s = s_mk, marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.1')
+            tax.scatter(points[i:i+1], s = s_mk, marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth=0.1)
 
         if (hasSplitSmetCoords(edf)):
 
@@ -143,7 +143,7 @@ def entriangle (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200
         mk = markers(1)*len(edf.index) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
         
         for i in range(len(edf.index)):
-            tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.1')
+            tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth=0.1)
 
         if(chart_title != ""):
             tax.set_title(chart_title, fontsize = fonts + 5)
@@ -164,7 +164,7 @@ def entriangle (edf,names = None, scale = 100 , fonts = 30 ,s_mk = 200
 
         mk = markers(len(edf.index)) ; colors = get_cmap(len(edf.index)) ; names = list(edf.index)
         for i in range(len(edf.index)):
-            tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth='0.3')
+            tax.scatter(points[i:i+1], s = s_mk , marker = mk[i], color = colors(i), label = names[i] ,edgecolor='black', linewidth=0.3)
 
         if(chart_title != ""):
             tax.set_title(chart_title, fontsize = fonts + 5)
@@ -240,7 +240,7 @@ def entriangle_list(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gr
             #mk = markers(1)*len(edf[i].index) ; 
             name = str(names[i])
             for j in range(len(edf[i].index)):
-                tax.scatter(points[j:j+1], s = s_mk , marker = mk[j], color = colors(i), label = name ,edgecolor='black', linewidth='0.3')
+                tax.scatter(points[j:j+1], s = s_mk , marker = mk[j], color = colors(i), label = name ,edgecolor='black', linewidth=0.3)
 
         if(chart_title != ""):
             tax.set_title(chart_title, fontsize = fonts + 5)
@@ -266,10 +266,10 @@ def entriangle_list(edf, names = None, scale = 100 , fonts = 30 ,s_mk = 200 , gr
                 mk = marker[i]*len(edf) ; names = str(edf[i].index[i]+' with '+str(len(edf)-j)+' PC')
 
                 if(i != 1):
-                    tax.scatter(points, s = s_mk , marker = mk[j], color=colors(j), linewidth='0.1')
+                    tax.scatter(points, s = s_mk , marker = mk[j], color=colors(j), linewidth=0.1)
                 
                 else:
-                    tax.scatter(points, s = s_mk , marker = mk[j], color ='white' , edgecolors = colors(j), linewidth='1.5')
+                    tax.scatter(points, s = s_mk , marker = mk[j], color ='white' , edgecolors = colors(j), linewidth=1.5)
                 
         if(chart_title == ""):
             tax.set_title("Channel Multivariate entropies (CMET)", fontsize = fonts + 5)
